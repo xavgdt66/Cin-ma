@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title "Ajouter un film" %}
+
+{% block body %}
+	<h1>Ajouter un film</h1>
+	{{ form_start(form) }}
+	{{ form(form) }}
+		<button type="submit">Créer</button>
+		{{ form_end(form) }}
+
+	{% endblock %}
