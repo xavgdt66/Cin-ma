@@ -1,9 +1,19 @@
 {% extends 'base.html.twig' %}
-{% block title "Ajouter un film" %}
+
+{% block title %}Ajouter un film{% endblock %}
+
 {% block body %}
-	<h1>Ajouter un film</h1>
-	{{ form_start(form) }}
-	{{ form(form) }}
-		<button type="submit">Créer</button>
-		{{ form_end(form) }}
-	{% endblock %}
+    <h1>Ajouter un film</h1>
+    {{ form_start(form) }}
+    {{ form_row(form.Titre) }}
+    {{ form_row(form.Description) }}
+
+    {# Boucle sur chaque date de diffusion et affichez les champs associés #}
+    {% for dateDiffusionForm in form.dateDiffusions %}
+        {{ form_row(dateDiffusionForm.date) }}
+        {{ form_row(dateDiffusionForm.heureDebut) }}
+    {% endfor %}
+
+    <button type="submit">Créer</button>
+    {{ form_end(form) }}
+{% endblock %}

@@ -4,7 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Movie;
 use App\Form\MovieType;
-use App\Repository\MovieRepository;
+
+use App\Entity\DateDiffusion;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -26,19 +27,32 @@ class MovieController extends AbstractController
     #[Route('/addmovie', name: 'app_movie')]
     public function addmovie(Request $request, EntityManagerInterface $em): Response
     {
-        $Movie = new Movie();
-        $form = $this->createForm(MovieType::class, $Movie);
+        $movie = new Movie();
+
+        // Instancier DateDiffusion et l'ajouter au film
+        $dateDiffusion = new DateDiffusion();
+        $movie->addDateDiffusion($dateDiffusion);
+
+        $form = $this->createForm(MovieType::class, $movie);
         $form->handleRequest($request);
+        
         if ($form->isSubmitted() && $form->isValid()) {
-            $em->persist($Movie);
+            // boucle pou associez La date et horaire au movie
+            foreach ($movie->getDateDiffusions() as $dateDiffusion) {
+                $dateDiffusion->setMovie($movie);
+                $em->persist($dateDiffusion);
+            }
+            
+            // Persit movie  + dates de diffusion 
+            $em->persist($movie);
             $em->flush();
-            $this->addFlash('success', 'La recette a bien été créée');
-            return $this->redirectToRoute('home.html.twig');
+            
+            $this->addFlash('success', 'Le film a bien été ajouté avec ses dates de diffusion.');
+            return $this->redirectToRoute('home/index.html.twig');
         }
+        
         return $this->render('movie/new.html.twig', [
-            'form' => $form
+            'form' => $form->createView()
         ]);
     }
-
-
 }

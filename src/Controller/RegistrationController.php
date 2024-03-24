@@ -30,6 +30,9 @@ class RegistrationController extends AbstractController
                 )
             );
 
+            $user->setRoles(['ROLE_CINEMA']); // Les users qui s'inscrivent ont le role Cinema
+
+
             $entityManager->persist($user);
             $entityManager->flush();
 

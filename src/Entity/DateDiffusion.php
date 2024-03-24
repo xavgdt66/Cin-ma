@@ -21,10 +21,26 @@ class DateDiffusion
     #[ORM\Column(type: "time")]
     private $heureDebut;
 
+    /********DEBUT MOVIE********************/
 
-    #[ORM\ManyToOne(targetEntity: Movie::class, inversedBy: "dateDiffusions")]
+    #[ORM\ManyToOne(targetEntity: Movie::class, inversedBy: "dateDiffusions")] // Relation avec la "private $dateDiffusions;" de l'entity Movie
     #[ORM\JoinColumn(nullable: false)]
     private $movie;
+
+    public function getMovie(): ?Movie
+    {
+        return $this->movie;
+    }
+
+    public function setMovie(?Movie $movie): self
+    {
+        $this->movie = $movie;
+
+        return $this;
+    }
+
+    /********FIN MOVIE********************/
+
 
     public function getId(): ?int
     {
@@ -55,15 +71,5 @@ class DateDiffusion
         return $this;
     }
 
-    public function getMovie(): ?Movie
-    {
-        return $this->movie;
-    }
-
-    public function setMovie(?Movie $movie): self
-    {
-        $this->movie = $movie;
-
-        return $this;
-    }
+  
 }
