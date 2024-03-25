@@ -8,6 +8,12 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
+
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+
+
+
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
@@ -20,6 +26,52 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 180)]
     private ?string $email = null;
+
+
+    /********DEBUT SALLES********************/
+
+    #[ORM\OneToMany(targetEntity:Salle::class, mappedBy:"cinema")]
+    private $salles;
+
+    public function __construct()
+    {
+        $this->salles = new ArrayCollection();
+    }
+
+    /**
+     * @return Collection|Salle[]
+     */
+    public function getSalles(): Collection
+    {
+        return $this->salles;
+    }
+
+    public function addSalle(Salle $salle): self
+    {
+        if (!$this->salles->contains($salle)) {
+            $this->salles[] = $salle;
+            $salle->setCinema($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSalle(Salle $salle): self
+    {
+        if ($this->salles->removeElement($salle)) {
+            // set the owning side to null (unless already changed)
+            if ($salle->getCinema() === $this) {
+                $salle->setCinema(null);
+            }
+        }
+
+        return $this;
+    }
+
+
+    /********FIN SALLES********************/
+
+
 
     /**
      * @var list<string> The user roles
