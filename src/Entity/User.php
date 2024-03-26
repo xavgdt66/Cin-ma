@@ -30,7 +30,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /********DEBUT SALLES********************/
 
-    #[ORM\OneToMany(targetEntity:Salle::class, mappedBy:"cinema")]
+    #[ORM\OneToMany(targetEntity:Salle::class, mappedBy:"cinema")] // Relation avec la "private $cinema;" de l'entity Salle
     private $salles;
 
     public function __construct()

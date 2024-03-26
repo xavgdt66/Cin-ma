@@ -22,12 +22,24 @@ class Salle
 
     private $nombrePlaces;
 
-    ////////////////////////////////////////////////////////////////////////////////
-    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: "salles")]
+    ///////////////////////DEBUT CINEMA /////////////////////////////////////////////////////////
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: "salles")] // Relation avec la "private $salles;" de l'entity User
     #[ORM\JoinColumn(nullable: false)]
 
     private $cinema;
-    ////////////////////////////////////////////////////////////////////////////////
+
+    public function getCinema(): ?User
+    {
+        return $this->cinema;
+    }
+
+    public function setCinema(?User $cinema): self
+    {
+        $this->cinema = $cinema;
+
+        return $this;
+    }
+    ///////////////////////////// FIN CINEMA ///////////////////////////////////////////////////
 
 
     public function getId(): ?int
@@ -59,15 +71,5 @@ class Salle
         return $this;
     }
 
-    public function getCinema(): ?User
-    {
-        return $this->cinema;
-    }
-
-    public function setCinema(?User $cinema): self
-    {
-        $this->cinema = $cinema;
-
-        return $this;
-    }
+    
 }
