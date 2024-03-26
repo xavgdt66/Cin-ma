@@ -10,7 +10,7 @@ class Salle
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(type: "integer")]
     private $id;
 
 
@@ -26,16 +26,16 @@ class Salle
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: "salles")] // Relation avec la "private $salles;" de l'entity User
     #[ORM\JoinColumn(nullable: false)]
 
-    private $cinema;
+    private $user;
 
-    public function getCinema(): ?User
+    public function getuser(): ?User
     {
-        return $this->cinema;
+        return $this->user;
     }
 
-    public function setCinema(?User $cinema): self
+    public function setuser(?User $user): self
     {
-        $this->cinema = $cinema;
+        $this->user = $user;
 
         return $this;
     }
@@ -70,6 +70,4 @@ class Salle
 
         return $this;
     }
-
-    
 }

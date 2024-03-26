@@ -24,11 +24,7 @@ class RegistrationController extends AbstractController
         $user = new User();
         $user->setRoles(['ROLE_CINEMA']); // Les utilisateurs reçoivent automatiquement le rôle ROLE_CINEMA lors de l'inscription
 
-        $salle1 = new Salle();
-        $salle1->setNom('Nom de la salle 1');
-        $salle1->setNombrePlaces(100);
-
-        $user->addSalle($salle1);
+    
 
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
