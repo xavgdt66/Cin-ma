@@ -30,7 +30,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /********DEBUT SALLES********************/
 
-    #[ORM\OneToMany(targetEntity:Salle::class, mappedBy:"cinema")] // Relation avec la "private $cinema;" de l'entity Salle
+    #[ORM\OneToMany(targetEntity:Salle::class, mappedBy:"user")] // Relation avec la "private $cinema;" de l'entity Salle
     private $salles;
 
     public function __construct()
@@ -45,12 +45,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return $this->salles;
     }
+    
 
     public function addSalle(Salle $salle): self
     {
         if (!$this->salles->contains($salle)) {
             $this->salles[] = $salle;
-            $salle->setCinema($this);
+            $salle->setUser($this);
         }
 
         return $this;
@@ -60,8 +61,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->salles->removeElement($salle)) {
             // set the owning side to null (unless already changed)
-            if ($salle->getCinema() === $this) {
-                $salle->setCinema(null);
+            if ($salle->getuser() === $this) {
+                $salle->setuser(null);
             }
         }
 

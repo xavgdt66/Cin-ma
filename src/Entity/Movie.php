@@ -24,6 +24,10 @@ class Movie
     #[ORM\Column(length: 255)]
     private ?string $Titre = null;
 
+    #[ORM\ManyToMany(targetEntity: Salle::class)]
+    private Collection $salles;
+
+
     /********DEBUT DATE DIFFUSION********************/
     #[ORM\OneToMany(targetEntity: DateDiffusion::class, mappedBy: "movie")] // Relation avec la "private $movie;" de l'entity DateDiffusion
 
@@ -32,6 +36,8 @@ class Movie
     public function __construct()
     {
         $this->dateDiffusions = new ArrayCollection();
+        $this->salles = new ArrayCollection();
+
     }
 
     /**
@@ -65,6 +71,41 @@ class Movie
 
 
     /********FIN DATE DIFFUSION********************/
+
+
+
+    /********DEBUT  SALLES********************/
+
+    /**
+     * @return Collection|Salle[]
+     */
+    public function getSalles(): Collection
+    {
+        return $this->salles;
+    }
+
+    public function addSalle(Salle $salle): self
+    {
+        if (!$this->salles->contains($salle)) {
+            $this->salles[] = $salle;
+        }
+
+        return $this;
+    }
+
+    public function removeSalle(Salle $salle): self
+    {
+        $this->salles->removeElement($salle);
+
+        return $this;
+    }
+    /********FIN SALLES********************/
+
+
+
+
+
+
 
     public function getId(): ?int
     {

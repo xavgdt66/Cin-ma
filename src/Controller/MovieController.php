@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Movie;
 use App\Form\MovieType;
+use App\Entity\Salle;
+use App\Entity\User;
 
 use App\Entity\DateDiffusion;
 
@@ -24,7 +26,7 @@ class MovieController extends AbstractController
         ]);
     }
 
-    #[Route('/addmovie', name: 'app_movie')]
+   /* #[Route('/addmovie', name: 'app_movie')]
     public function addmovie(Request $request, EntityManagerInterface $em): Response
     {
         $movie = new Movie();
@@ -54,5 +56,44 @@ class MovieController extends AbstractController
         return $this->render('movie/new.html.twig', [
             'form' => $form->createView()
         ]);
+    }*/
+
+
+
+    #[Route('/addmovie', name: 'app_movie')]
+    public function addmovie(Request $request, EntityManagerInterface $em): Response
+    {
+        $movie = new Movie();
+
+        // Instancier DateDiffusion et l'ajouter au film
+        $dateDiffusion = new DateDiffusion();
+        $movie->addDateDiffusion($dateDiffusion);
+
+        // Récupérer les salles disponibles pour l'utilisateur courant
+        $user = $this->getUser();
+        $salles = $user->getSalles();  
+
+        $form = $this->createForm(MovieType::class, $movie, ['salles' => $salles]);
+        $form->handleRequest($request);
+        
+        if ($form->isSubmitted() && $form->isValid()) {
+            // boucle pour associer la date et l'horaire au film
+            foreach ($movie->getDateDiffusions() as $dateDiffusion) {
+                $dateDiffusion->setMovie($movie);
+                $em->persist($dateDiffusion);
+            }
+            
+            // Persister le film et les dates de diffusion 
+            $em->persist($movie);
+            $em->flush();
+            
+            $this->addFlash('success', 'Le film a bien été ajouté avec ses dates de diffusion.');
+            return $this->redirectToRoute('home/index.html.twig');
+        }
+        
+        return $this->render('movie/new.html.twig', [
+            'form' => $form->createView()
+        ]);
     }
+
 }

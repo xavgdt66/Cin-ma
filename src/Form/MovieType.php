@@ -10,6 +10,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 
 class MovieType extends AbstractType
@@ -24,6 +25,13 @@ class MovieType extends AbstractType
                 'entry_options' => ['label' => false],
                 'allow_add' => true,
                 'by_reference' => false,
+            ])
+            ->add('salles', EntityType::class, [
+                'class' => 'App\Entity\Salle',
+                'choices' => $options['salles'],
+                'choice_label' => 'nom',
+                'multiple' => true,
+                'expanded' => true,
             ]);
     }
 
@@ -31,6 +39,8 @@ class MovieType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Movie::class,
+            'salles' => [],
+
         ]);
     }
 }
