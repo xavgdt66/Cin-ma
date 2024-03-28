@@ -3,3 +3,9 @@ controllers:
         path: ../src/Controller/
         namespace: App\Controller
     type: attribute
+
+user_profile:
+    path: '/user/{id}'
+    controller: 'App\Controller\UserController::profile'
+    requirements:
+        id: \d+ 
