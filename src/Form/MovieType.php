@@ -21,18 +21,19 @@ class MovieType extends AbstractType
         $builder
             ->add('Titre')
             ->add('Description')
-            ->add('dateDiffusions', CollectionType::class, [// Systeme de form imbriquer qui permet d'ajoute Le form DateDiffusionType
-                'entry_type' => DateDiffusionType::class,
-                'entry_options' => ['label' => false],
-                'allow_add' => true,
-                'by_reference' => false,
-            ])
+            
             ->add('salles', EntityType::class, [
                 'class' => 'App\Entity\Salle',
                 'choices' => $options['salles'],
                 'choice_label' => 'nom',
                 'multiple' => true,
                 'expanded' => true,
+            ])
+            ->add('dateDiffusions', CollectionType::class, [// Systeme de form imbriquer qui permet d'ajoute Le form DateDiffusionType
+                'entry_type' => DateDiffusionType::class,
+                'entry_options' => ['label' => false],
+                'allow_add' => true,
+                'by_reference' => false,
             ]);
     }
 

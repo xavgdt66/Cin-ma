@@ -2,16 +2,14 @@
 
 namespace App\Entity;
 
-use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
-
-
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
+use App\Repository\UserRepository;
 
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
@@ -27,10 +25,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 180)]
     private ?string $email = null;
 
-
     /********DEBUT SALLES********************/
 
-    #[ORM\OneToMany(targetEntity:Salle::class, mappedBy:"user")] // Relation avec la "private $cinema;" de l'entity Salle
+    #[ORM\OneToMany(targetEntity: Salle::class, mappedBy: "user")] // Relation avec la "private $cinema;" de l'entity Salle
     private $salles;
 
     public function __construct()
@@ -45,7 +42,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return $this->salles;
     }
-    
+
 
     public function addSalle(Salle $salle): self
     {

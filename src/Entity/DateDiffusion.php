@@ -5,15 +5,13 @@ namespace App\Entity;
 use App\Repository\DateDiffusionRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-
-#[ORM\Entity(repositoryClass: DateDiffusionRepository::class)] 
+#[ORM\Entity(repositoryClass: DateDiffusionRepository::class)]
 class DateDiffusion
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private $id;
-
 
     #[ORM\Column(type: "datetime")]
     private $date;
@@ -22,7 +20,6 @@ class DateDiffusion
     private $heureDebut;
 
     /********DEBUT MOVIE********************/
-
     #[ORM\ManyToOne(targetEntity: Movie::class, inversedBy: "dateDiffusions")] // Relation avec la "private $dateDiffusions;" de l'entity Movie
     #[ORM\JoinColumn(nullable: false)]
     private $movie;
@@ -38,10 +35,7 @@ class DateDiffusion
 
         return $this;
     }
-
     /********FIN MOVIE********************/
-
-
     public function getId(): ?int
     {
         return $this->id;
@@ -70,6 +64,4 @@ class DateDiffusion
 
         return $this;
     }
-
-  
 }
