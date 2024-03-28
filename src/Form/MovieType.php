@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Movie;
 use App\Entity\DateDiffusion; 
+use App\Form\DateDiffusionType;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
