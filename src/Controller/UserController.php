@@ -17,10 +17,15 @@ class UserController extends AbstractController
 
         if (!$user) {
             throw $this->createNotFoundException('Utilisateur non trouvé');
-        }
+        } 
+
+        $films = $user->getMovies();
+
 
         return $this->render('user/profile.html.twig', [
             'user' => $user,
+            'films' => $films,
+
         ]);
     }
 }

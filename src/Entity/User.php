@@ -25,14 +25,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 180)]
     private ?string $email = null;
 
+
+
+    #[ORM\OneToMany(targetEntity: Movie::class, mappedBy: "user")] // Relation avec la "private $user;" de l'entity Movie
+    private $movies;
+
+
+
+
     /********DEBUT SALLES********************/
 
-    #[ORM\OneToMany(targetEntity: Salle::class, mappedBy: "user")] // Relation avec la "private $cinema;" de l'entity Salle
+    #[ORM\OneToMany(targetEntity: Salle::class, mappedBy: "user")] // Relation avec la "private $user;" de l'entity Salle
     private $salles;
 
     public function __construct()
     {
         $this->salles = new ArrayCollection();
+        $this->movies = new ArrayCollection(); /////
+
     }
 
     /**
@@ -69,6 +79,40 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /********FIN SALLES********************/
 
+
+    /******* DEBUT MOVIEs *************/
+
+     /**
+     * @return Collection|Movie[]
+     */
+    public function getMovies(): Collection
+    {
+        return $this->movies;
+    }
+
+    public function addMovie(Movie $movie): self
+    {
+        if (!$this->movies->contains($movie)) {
+            $this->movies[] = $movie;
+            $movie->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMovie(Movie $movie): self
+    {
+        if ($this->movies->removeElement($movie)) {
+            // set the owning side to null (unless already changed)
+            if ($movie->getUser() === $this) {
+                $movie->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /********* FIN MOVIE ************** */
 
 
     /**

@@ -28,8 +28,14 @@ class Movie
     private Collection $salles;
 
 
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: "movies")] // Relation avec la "private $movies;" de l'entity User
+    #[ORM\JoinColumn(nullable: false)]
+    private $user;
+
+
+
     /********DEBUT DATE DIFFUSION********************/
-    #[ORM\OneToMany(targetEntity: DateDiffusion::class, mappedBy: "movie", cascade:['persist'])] // Relation avec la "private $movie;" de l'entity DateDiffusion
+    #[ORM\OneToMany(targetEntity: DateDiffusion::class, mappedBy: "movie", cascade: ['persist'])] // Relation avec la "private $movie;" de l'entity DateDiffusion
 
     private $dateDiffusions;
 
@@ -37,7 +43,6 @@ class Movie
     {
         $this->dateDiffusions = new ArrayCollection();
         $this->salles = new ArrayCollection();
-
     }
 
     /**
@@ -101,9 +106,21 @@ class Movie
     }
     /********FIN SALLES********************/
 
+    /********DEBUT USER ********************/
 
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
 
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
+        return $this;
+    }
+
+    /********FIN USER********************/
 
 
 
