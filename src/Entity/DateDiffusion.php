@@ -10,7 +10,7 @@ class DateDiffusion
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(type: "integer")]
     private $id;
 
     #[ORM\Column(type: "datetime")]

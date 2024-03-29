@@ -29,7 +29,7 @@ class Movie
 
 
     /********DEBUT DATE DIFFUSION********************/
-    #[ORM\OneToMany(targetEntity: DateDiffusion::class, mappedBy: "movie")] // Relation avec la "private $movie;" de l'entity DateDiffusion
+    #[ORM\OneToMany(targetEntity: DateDiffusion::class, mappedBy: "movie", cascade:['persist'])] // Relation avec la "private $movie;" de l'entity DateDiffusion
 
     private $dateDiffusions;
 
