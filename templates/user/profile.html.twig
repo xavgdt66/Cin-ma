@@ -7,12 +7,13 @@
     <p><strong>E-mail :</strong> {{ user.email }}</p>
 
 
- <ul>
-        {% for film in user.movie %} {# Accédez aux films publiés par l'utilisateur via la relation user.films #}
-            <li>{{ film.movie }}</li>
-            <!-- Afficher d'autres détails du film si nécessaire -->
-        {% endfor %}
-    </ul>
+ <ul> 
+    {% for film in films %}
+        <li>{{ film.titre }}</li>
+    {% endfor %}
+</ul>
+
+
 
 
 {% endblock %}

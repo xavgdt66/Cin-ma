@@ -21,6 +21,7 @@ class UserController extends AbstractController
 
         $films = $user->getMovies();
 
+       // var_dump($films);
 
         return $this->render('user/profile.html.twig', [
             'user' => $user,

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller;
 
 use App\Entity\Movie;
@@ -21,6 +22,7 @@ class MovieController extends AbstractController
         ]);
     }
 
+
     #[Route('/addmovie', name: 'app_movie')]
     public function addmovie(Request $request, EntityManagerInterface $em, Security $security): Response
     {
@@ -33,11 +35,11 @@ class MovieController extends AbstractController
 
         $movie = new Movie();
 
-        // Instancier DateDiffusion et l'ajouter au film
+        $movie->setUser($this->getUser());
+
         $dateDiffusion = new DateDiffusion();
         $movie->addDateDiffusion($dateDiffusion);
 
-        // Récupérer les salles disponibles pour l'utilisateur courant
         $user = $this->getUser();
         $salles = $user->getSalles();
 
@@ -45,12 +47,11 @@ class MovieController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // Utiliser la méthode "map" de Doctrine pour associer chaque date de diffusion au film
             $movie->getDateDiffusions()->map(function ($dateDiffusion) use ($movie) {
                 $dateDiffusion->setMovie($movie);
             });
 
-            // Persister le film et les dates de diffusion 
+
             $em->persist($movie);
             $em->flush();
 
