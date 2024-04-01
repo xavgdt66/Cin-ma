@@ -33,15 +33,15 @@ class MovieController extends AbstractController
             return $this->redirectToRoute('app_home');
         }
 
-        $movie = new Movie();
+        $movie = new Movie(); // Instance de Movie 
 
-        $movie->setUser($this->getUser());
+        $movie->setUser($this->getUser()); // Instance de Movie recupere l'user courant
 
-        $dateDiffusion = new DateDiffusion();
-        $movie->addDateDiffusion($dateDiffusion);
+        $dateDiffusion = new DateDiffusion(); // Instance de DateDiffusion 
+        $movie->addDateDiffusion($dateDiffusion); // Movie ajoute uen heure + date sur DateDiffusion
 
         $user = $this->getUser();
-        $salles = $user->getSalles();
+        $salles = $user->getSalles(); // Recup les salles 
 
         $form = $this->createForm(MovieType::class, $movie, ['salles' => $salles]);
         $form->handleRequest($request);
@@ -60,6 +60,20 @@ class MovieController extends AbstractController
         }
         return $this->render('movie/new.html.twig', [
             'form' => $form->createView()
+        ]);
+    }
+
+    #[Route('/movie/{id}', name: 'app_movie_show')]
+    public function showMovie($id, EntityManagerInterface $em): Response
+    {
+        $movie = $em->getRepository(Movie::class)->find($id);
+
+        if (!$movie) {
+            throw $this->createNotFoundException('Film non trouvé');
+        }
+
+        return $this->render('movie/show.html.twig', [
+            'movie' => $movie,
         ]);
     }
 }

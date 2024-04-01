@@ -6,14 +6,13 @@
     <h1>Profil de l'utilisateur</h1>
     <p><strong>E-mail :</strong> {{ user.email }}</p>
 
-
- <ul> 
-    {% for film in films %}
-        <li>{{ film.titre }}</li>
-    {% endfor %}
-</ul>
-
-
-
-
+    <ul>
+        {% for film in films %}
+            <li>
+                <strong>Titre :</strong> {{ film.titre }} <br>
+                <strong>Description :</strong> {{ film.description }} <br>
+                <a href="{{ path('app_movie_show', {'id': film.id}) }}">En savoir plus</a>
+            </li> 
+        {% endfor %}
+    </ul>
 {% endblock %}

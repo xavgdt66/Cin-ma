@@ -1,0 +1,13 @@
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails du film{% endblock %}
+
+{% block body %}
+    <h1>Détails du film</h1>
+    <p><strong>Titre:</strong> {{ movie.titre }}</p>
+    <p><strong>Description:</strong> {{ movie.description }}</p>
+  
+     
+    <a href="{{ path('app_home') }}">Retour à la liste des films</a>
+{% endblock %}
