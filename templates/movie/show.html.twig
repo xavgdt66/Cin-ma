@@ -1,13 +1,23 @@
-
 {% extends 'base.html.twig' %}
 
-{% block title %}Détails du film{% endblock %}
+{% block title %}Film{% endblock %}
+
 
 {% block body %}
     <h1>Détails du film</h1>
-    <p><strong>Titre:</strong> {{ movie.titre }}</p>
-    <p><strong>Description:</strong> {{ movie.description }}</p>
-  
-     
+    <p><strong>Titre :</strong> {{ movie.titre }}</p>
+    <p><strong>Description :</strong> {{ movie.description }}</p>
+
+    {% if movie.dateDiffusions is not empty %}
+        <p><strong>Dates de diffusion :</strong></p>
+        <ul>
+            {% for dateDiffusion in movie.dateDiffusions %}
+                <li>{{ dateDiffusion.date|date('d/m/Y') }} à {{ dateDiffusion.heuredebut|date('H:i') }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Aucune date de diffusion associée à ce film.</p>
+    {% endif %}
+    
     <a href="{{ path('app_home') }}">Retour à la liste des films</a>
 {% endblock %}
