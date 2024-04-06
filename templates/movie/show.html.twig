@@ -1,23 +1,18 @@
+{# templates/movie/show.html.twig #}
+
 {% extends 'base.html.twig' %}
 
-{% block title %}Film{% endblock %}
-
+{% block title %}Détails du film : {{ movie.Titre }}{% endblock %}
 
 {% block body %}
-    <h1>Détails du film</h1>
-    <p><strong>Titre :</strong> {{ movie.titre }}</p>
-    <p><strong>Description :</strong> {{ movie.description }}</p>
+    <h1>{{ movie.Titre }}</h1>
+    <p>Description : {{ movie.Description }}</p>
+    <p>Date de diffusion : {{ movie.dateDiffusions.first().date|date('Y-m-d H:i') }}</p>
+    <p>Salle : {{ movie.salles.first().nom }}</p>
+    <p>Capacité de la salle : {{ movie.salles.first().nombrePlaces }}</p>
 
-    {% if movie.dateDiffusions is not empty %}
-        <p><strong>Dates de diffusion :</strong></p>
-        <ul>
-            {% for dateDiffusion in movie.dateDiffusions %}
-                <li>{{ dateDiffusion.date|date('d/m/Y') }} à {{ dateDiffusion.heuredebut|date('H:i') }}</li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>Aucune date de diffusion associée à ce film.</p>
-    {% endif %}
-    
+    <h2>Réserver des places</h2>
+    {{ form(reservation_form) }}
+
     <a href="{{ path('app_home') }}">Retour à la liste des films</a>
 {% endblock %}
