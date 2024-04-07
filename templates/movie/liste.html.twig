@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des films{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1 class="mt-4 mb-4">Liste des films</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Nom du film</th>
+                <th scope="col">Nombre de places</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for movie in movies %}
+            <tr>
+                <td>{{ movie.Titre }}</td>
+                <td>{{ movie.Description }}</td>
+                <td>
+                    <a href="{{ path('editer_movie', {'id': movie.id}) }}" class="btn btn-sm btn-primary">Éditer</a>
+                    <a href="{{ path('supprimer_movie', {'id': movie.id}) }}" class="btn btn-sm btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette salle ?')">Supprimer</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="{{ path('app_movie') }}" class="btn btn-success">Ajoute une Film</a>
+</div>
+{% endblock %}

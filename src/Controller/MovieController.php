@@ -16,6 +16,15 @@ use Symfony\Bundle\SecurityBundle\Security;
 class MovieController extends AbstractController
 {
 
+    private $entityManager;
+    private $security;
+
+    public function __construct(EntityManagerInterface $entityManager, Security $security)
+    {
+        $this->entityManager = $entityManager;
+        $this->security = $security;
+    }
+
     #[Route('/addmovie', name: 'app_movie')]
     public function addmovie(Request $request, EntityManagerInterface $em, Security $security): Response
     {
@@ -72,4 +81,62 @@ class MovieController extends AbstractController
             'reservation_form' => $form->createView(),
         ]);
     }
+
+
+
+// Editer un film
+
+    #[Route("/movie/editer/{id}", name: "editer_movie")]
+    public function editerMovie(Request $request, Movie $movie): Response
+    {
+        $form = $this->createForm(MovieType::class, $movie);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->entityManager->flush();  
+
+            return $this->redirectToRoute('app_home');
+        }
+
+        return $this->render('movie/editer.html.twig', [
+            'movie' => $movie,
+            'form' => $form->createView(),
+        ]);
+    }
+
+// Supprimer un film
+
+    #[Route("/movie/supprimer/{id}", name: "supprimer_movie")]
+    public function supprimerSalle(Request $request, Movie $movie): Response
+    {
+        $this->entityManager->remove($movie);
+        $this->entityManager->flush();
+
+        return $this->redirectToRoute('liste_movie'); 
+    }
+
+
+
+
+
+    #[Route("/listmovie", name: "liste_movie")]
+    public function listeSalles(): Response
+    {
+        $user = $this->security->getUser();
+        if (!$user) {
+            throw $this->createAccessDeniedException('Vous devez être connecté pour voir la liste des films.');
+        }
+        $movies = $this->entityManager->getRepository(Movie::class)->findBy(['user' => $user]);
+    
+        if (!$movies) {
+            throw $this->createNotFoundException('Aucun film trouvé pour cet utilisateur.');
+        }
+    
+        return $this->render('movie/liste.html.twig', [
+            'movies' => $movies,
+        ]);
+    }
+    
+
+
 }

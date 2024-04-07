@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Éditer le film {{ movie.Titre }}{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1 class="mt-4 mb-4">Éditer le film "{{ movie.Titre }}"</h1>
+
+    {{ form_start(form) }}
+    <div class="form-group">
+        {{ form_label(form.Titre, 'Nom du film') }}
+        {{ form_widget(form.Titre, { 'attr': {'class': 'form-control'} }) }}
+    </div>
+    <div class="form-group">
+        {{ form_label(form.Description, 'description') }}
+        {{ form_widget(form.Description, { 'attr': {'class': 'form-control'} }) }}
+    </div>
+    <button type="submit" class="btn btn-primary">Enregistrer</button>
+    {{ form_end(form) }}
+</div>
+{% endblock %}

@@ -25,13 +25,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 180)]
     private ?string $email = null;
 
-
-
     #[ORM\OneToMany(targetEntity: Movie::class, mappedBy: "user")] // Relation avec la "private $user;" de l'entity Movie
     private $movies;
-
-
-
 
     /********DEBUT SALLES********************/
 
@@ -76,13 +71,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-
     /********FIN SALLES********************/
-
 
     /******* DEBUT MOVIEs *************/
 
-     /**
+    /**
      * @return Collection|Movie[]
      */
     public function getMovies(): Collection
@@ -113,7 +106,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /********* FIN MOVIE ************** */
-
 
     /**
      * @var list<string> The user roles
@@ -202,8 +194,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
-    public function __toString(): string // // Convertie en string getNom pour le crud admin de movie 
+    public function __toString(): string // // Convertie en string getEmail pour le crud admin de movie 
     {
-        return $this->getEmail(); 
+        return $this->getEmail();
     }
 }

@@ -31,7 +31,7 @@ class SalleController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $user = $this->security->getUser();
-            if(!$user) {
+            if (!$user) {
                 throw $this->createAccessDeniedException('Vous devez être connecté pour ajouter une salle.');
             }
             $salle->setUser($user);
@@ -78,7 +78,7 @@ class SalleController extends AbstractController
     public function listeSalles(): Response
     {
         $user = $this->security->getUser();
-        if(!$user) {
+        if (!$user) {
             throw $this->createAccessDeniedException('Vous devez être connecté pour voir la liste des salles.');
         }
         $salles = $this->entityManager->getRepository(Salle::class)->findBy(['user' => $user]);
