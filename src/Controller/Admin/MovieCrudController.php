@@ -29,6 +29,8 @@ class MovieCrudController extends AbstractCrudController
             TextField::new('description'),
             AssociationField::new('salles'),
             AssociationField::new('dateDiffusions'),
+            AssociationField::new('user'),
+
         ];
     }
     

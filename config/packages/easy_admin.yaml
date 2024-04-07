@@ -9,21 +9,26 @@ easy_admin:
                     - Description  # champs Description 
                     - { property: 'dateDiffusions.date', label: 'Date de diffusion' }  # Date de diffusion pour chaque film
                     - { property: 'salles.nom', label: 'Salle' }  # Nom de la salle pour chaque film
+                    - { property: 'user.email', label: 'User' }  # Nom du user pour chaque film
+
             new:  
                 fields:  
                     - Titre  
                     - Description  
                     - dateDiffusions 
-                    - salles  
+                    - salles
+                    - user
             edit:  # Configuration de la vue d'édition d'un enregistrement existant
                 fields:  
                     - Titre  
                     - Description  
                     - dateDiffusions  
                     - salles  
+                    - user
             form:  # Configuration générale du formulaire
                 fields:  
                     - Titre  
                     - Description  
                     - dateDiffusions  
                     - salles  
+                    - user

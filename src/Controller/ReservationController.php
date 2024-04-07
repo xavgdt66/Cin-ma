@@ -49,4 +49,5 @@ class ReservationController extends AbstractController
             'movie' => $movie,
         ]);
     }
+    
 }

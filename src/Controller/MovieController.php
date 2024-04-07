@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Entity\Movie;
 use App\Entity\DateDiffusion;
 use App\Form\MovieType;
-use App\Form\ReservationType;
+use App\Form\ReservationFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,7 +15,7 @@ use Symfony\Bundle\SecurityBundle\Security;
 
 class MovieController extends AbstractController
 {
- 
+
     #[Route('/addmovie', name: 'app_movie')]
     public function addmovie(Request $request, EntityManagerInterface $em, Security $security): Response
     {
@@ -65,7 +65,7 @@ class MovieController extends AbstractController
             throw $this->createNotFoundException('Film non trouvé');
         }
 
-        $form = $this->createForm(ReservationType::class);
+        $form = $this->createForm(ReservationFormType::class);
 
         return $this->render('movie/show.html.twig', [
             'movie' => $movie,
