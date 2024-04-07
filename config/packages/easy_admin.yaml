@@ -1,0 +1,29 @@
+easy_admin:  
+    entities:  
+        Movie:  
+            class: App\Entity\Movie  
+            label: 'Movies' 
+            list:  
+                fields:  
+                    - Titre  # champs  Titre 
+                    - Description  # champs Description 
+                    - { property: 'dateDiffusions.date', label: 'Date de diffusion' }  # Date de diffusion pour chaque film
+                    - { property: 'salles.nom', label: 'Salle' }  # Nom de la salle pour chaque film
+            new:  
+                fields:  
+                    - Titre  
+                    - Description  
+                    - dateDiffusions 
+                    - salles  
+            edit:  # Configuration de la vue d'édition d'un enregistrement existant
+                fields:  
+                    - Titre  
+                    - Description  
+                    - dateDiffusions  
+                    - salles  
+            form:  # Configuration générale du formulaire
+                fields:  
+                    - Titre  
+                    - Description  
+                    - dateDiffusions  
+                    - salles  

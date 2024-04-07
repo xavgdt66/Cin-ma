@@ -3,12 +3,15 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Movie;
+use App\Entity\Salle;
+use App\Entity\DateDiffusion;
+
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 
+use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;  // Pour utiliser les entity jointer 
 
 class MovieCrudController extends AbstractCrudController
 {
@@ -23,9 +26,9 @@ class MovieCrudController extends AbstractCrudController
         return [
             IdField::new('id'),
             TextField::new('titre'),
-            TextEditorField::new('description'),
-            
-
+            TextField::new('description'),
+            AssociationField::new('salles'),
+            AssociationField::new('dateDiffusions'),
         ];
     }
     

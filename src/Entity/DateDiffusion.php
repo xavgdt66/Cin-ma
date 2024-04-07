@@ -41,6 +41,7 @@ class DateDiffusion
         return $this->id;
     }
 
+    
     public function getDate(): ?\DateTimeInterface
     {
         return $this->date;
@@ -63,5 +64,11 @@ class DateDiffusion
         $this->heureDebut = $heureDebut;
 
         return $this;
+    }
+
+
+    public function __toString(): string // Convertie en string date pour le crud admin de movie 
+    {
+        return $this->date->format('Y-m-d'); 
     }
 }

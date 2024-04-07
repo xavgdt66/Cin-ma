@@ -41,7 +41,10 @@ class Salle
     }
     ///////////////////////////// FIN CINEMA ///////////////////////////////////////////////////
 
-
+    public function __toString(): string // // Convertie en string getNom pour le crud admin de movie 
+    {
+        return $this->getNom(); 
+    }
     public function getId(): ?int
     {
         return $this->id;
