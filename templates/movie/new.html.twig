@@ -8,6 +8,8 @@
     {{ form_start(form) }}
     {{ form_row(form.Titre) }}
     {{ form_row(form.Description) }}
+    {{ form_row(form.brochure) }} 
+
 
     {# Boucle sur chaque date de diffusion et affichez les champs associés #}
     {% for dateDiffusionForm in form.dateDiffusions %}

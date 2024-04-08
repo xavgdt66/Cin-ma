@@ -13,6 +13,9 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
+use Symfony\Component\Validator\Constraints\File;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+
 
 class MovieType extends AbstractType
 {
@@ -34,7 +37,29 @@ class MovieType extends AbstractType
                 'entry_options' => ['label' => false],
                 'allow_add' => true,
                 'by_reference' => false,
-            ]);
+            ])
+            ->add('brochure', FileType::class, [
+                'label' => 'Brochure (PNG file)',
+
+                // unmapped means that this field is not associated to any entity property
+                'mapped' => false,
+
+                // make it optional so you don't have to re-upload the PNG file
+                // every time you edit the Product details
+                'required' => false,
+
+                // unmapped fields can't define their validation using attributes
+                // in the associated entity, so you can use the PHP constraint classes
+                'constraints' => [
+                    new File([
+                        'maxSize' => '2048k', // augmentez la taille si nécessaire
+                        'mimeTypes' => [
+                            'image/png',
+                        ],
+                        'mimeTypesMessage' => 'Please upload a valid PNG image',
+                    ])
+                ],
+            ]);;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

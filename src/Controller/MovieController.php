@@ -13,6 +13,15 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bundle\SecurityBundle\Security;
 
+
+
+use Symfony\Component\String\Slugger\SluggerInterface; 
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\File\UploadedFile; 
+
+
+
+
 class MovieController extends AbstractController
 {
 
@@ -24,9 +33,9 @@ class MovieController extends AbstractController
         $this->entityManager = $entityManager;
         $this->security = $security;
     }
-
+/*
     #[Route('/addmovie', name: 'app_movie')]
-    public function addmovie(Request $request, EntityManagerInterface $em, Security $security): Response
+    public function addmovie(Request $request, EntityManagerInterface $em, Security $security, SluggerInterface $slugger): Response
     {
 
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
@@ -48,11 +57,35 @@ class MovieController extends AbstractController
         $form = $this->createForm(MovieType::class, $movie, ['salles' => $salles]);
         $form->handleRequest($request);
 
+
+
         if ($form->isSubmitted() && $form->isValid()) {
             $movie->getDateDiffusions()->map(function ($dateDiffusion) use ($movie) {
                 $dateDiffusion->setMovie($movie);
             });
-
+    
+            $brochureFile = $form->get('brochure')->getData();
+    
+            if ($brochureFile) {
+                $originalFilename = pathinfo($brochureFile->getClientOriginalName(), PATHINFO_FILENAME);
+                
+                $safeFilename = $slugger->slug($originalFilename); 
+                $newFilename = $safeFilename . '-' . uniqid() . '.' . $brochureFile->guessExtension();
+    
+                // Déplacer le fichier vers le répertoire où les brochures sont stockées
+                try {
+                    $brochureFile->move(
+                        $this->getParameter('brochures_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    // ... gérer l'exception si quelque chose se passe mal lors du téléchargement du fichier
+                }
+    
+                // Met à jour la propriété 'brochureFilename' pour stocker le nom du fichier PDF
+                // au lieu de son contenu
+                $movie->setBrochureFilename($newFilename);
+            }
 
             $em->persist($movie);
             $em->flush();
@@ -63,7 +96,71 @@ class MovieController extends AbstractController
         return $this->render('movie/new.html.twig', [
             'form' => $form->createView()
         ]);
+    }*/
+
+    #[Route('/addmovie', name: 'app_movie')]
+public function addmovie(Request $request, EntityManagerInterface $em, Security $security, SluggerInterface $slugger): Response
+{
+
+    $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
+
+    if (!$security->isGranted('ROLE_CINEMA') && !$security->isGranted('ROLE_ADMIN')) {
+        return $this->redirectToRoute('app_home');
     }
+
+    $movie = new Movie(); // Instance de Movie 
+
+    $movie->setUser($this->getUser()); // Instance de Movie récupère l'utilisateur courant
+
+    $dateDiffusion = new DateDiffusion(); // Instance de DateDiffusion 
+    $movie->addDateDiffusion($dateDiffusion); // Movie ajoute une heure + date sur DateDiffusion
+
+    $user = $this->getUser();
+    $salles = $user->getSalles(); // Récupère les salles 
+
+    $form = $this->createForm(MovieType::class, $movie, ['salles' => $salles]);
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+        $movie->getDateDiffusions()->map(function ($dateDiffusion) use ($movie) {
+            $dateDiffusion->setMovie($movie);
+        });
+
+        $brochureFile = $form->get('brochure')->getData();
+
+        // Cette condition est nécessaire car le champ 'brochure' n'est pas requis
+        // Donc le fichier PDF doit être traité uniquement lorsqu'un fichier est téléchargé
+        if ($brochureFile) {
+            $originalFilename = pathinfo($brochureFile->getClientOriginalName(), PATHINFO_FILENAME);
+            // Ceci est nécessaire pour inclure en toute sécurité le nom de fichier en tant que partie de l'URL
+            $safeFilename = $slugger->slug($originalFilename);
+            $newFilename = $safeFilename . '-' . uniqid() . '.' . $brochureFile->guessExtension();
+
+            // Déplacer le fichier vers le répertoire où les brochures sont stockées
+            try {
+                $brochureFile->move(
+                    $this->getParameter('brochures_directory'),
+                    $newFilename
+                );
+            } catch (FileException $e) {
+                // ... gérer l'exception si quelque chose se passe mal lors du téléchargement du fichier
+            }
+
+            // Met à jour la propriété 'brochureFilename' pour stocker le nom du fichier PDF
+            // au lieu de son contenu
+            $movie->setBrochureFilename($newFilename);
+        }
+
+        $em->persist($movie);
+        $em->flush();
+
+        $this->addFlash('success', 'Le film a bien été ajouté avec ses dates de diffusion.');
+        return $this->redirectToRoute('app_home');
+    }
+    return $this->render('movie/new.html.twig', [
+        'form' => $form->createView()
+    ]);
+}
 
     #[Route('/movie/{id}', name: 'app_movie_show')]
     public function showMovie($id, EntityManagerInterface $em): Response
@@ -84,7 +181,7 @@ class MovieController extends AbstractController
 
 
 
-// Editer un film
+    // Editer un film
 
     #[Route("/movie/editer/{id}", name: "editer_movie")]
     public function editerMovie(Request $request, Movie $movie): Response
@@ -93,7 +190,7 @@ class MovieController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->entityManager->flush();  
+            $this->entityManager->flush();
 
             return $this->redirectToRoute('app_home');
         }
@@ -104,7 +201,7 @@ class MovieController extends AbstractController
         ]);
     }
 
-// Supprimer un film
+    // Supprimer un film
 
     #[Route("/movie/supprimer/{id}", name: "supprimer_movie")]
     public function supprimerSalle(Request $request, Movie $movie): Response
@@ -112,7 +209,7 @@ class MovieController extends AbstractController
         $this->entityManager->remove($movie);
         $this->entityManager->flush();
 
-        return $this->redirectToRoute('liste_movie'); 
+        return $this->redirectToRoute('liste_movie');
     }
 
 
@@ -127,16 +224,13 @@ class MovieController extends AbstractController
             throw $this->createAccessDeniedException('Vous devez être connecté pour voir la liste des films.');
         }
         $movies = $this->entityManager->getRepository(Movie::class)->findBy(['user' => $user]);
-    
+
         if (!$movies) {
             throw $this->createNotFoundException('Aucun film trouvé pour cet utilisateur.');
         }
-    
+
         return $this->render('movie/liste.html.twig', [
             'movies' => $movies,
         ]);
     }
-    
-
-
 }

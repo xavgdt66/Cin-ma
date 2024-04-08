@@ -2,17 +2,30 @@
 
 {% extends 'base.html.twig' %}
 
-{% block title %}Détails du film : {{ movie.Titre }}{% endblock %}
+{% block title %}Détails du film :
+	{{ movie.Titre }}
+{% endblock %}
 
 {% block body %}
-    <h1>{{ movie.Titre }}</h1>
-    <p>Description : {{ movie.Description }}</p>
-    <p>Date de diffusion : {{ movie.dateDiffusions.first().date|date('Y-m-d H:i') }}</p>
-    <p>Salle : {{ movie.salles.first().nom }}</p>
-    <p>Capacité de la salle : {{ movie.salles.first().nombrePlaces }}</p>
+	<h1>{{ movie.Titre }}</h1>
 
-    <h2>Réserver des places</h2>
-    {{ form(reservation_form) }}
+	{% if movie.brochureFilename %}
+		<img src="{{ asset('/uploads/brochures/' ~ movie.brochureFilename) }}" alt="Brochure" width="300" height="200">
+	{% else %}
+		<p>Aucune image disponible</p>
+	{% endif %}
 
-    <a href="{{ path('app_home') }}">Retour à la liste des films</a>
-{% endblock %}
+	<p>Description :
+		{{ movie.Description }}</p>
+	<p>Date de diffusion :
+		{{ movie.dateDiffusions.first().date|date('Y-m-d H:i') }}</p>
+	<p>Salle :
+		{{ movie.salles.first().nom }}</p>
+	<p>Capacité de la salle :
+		{{ movie.salles.first().nombrePlaces }}</p>
+
+	<h2>Réserver des places</h2>
+	{{ form(reservation_form) }}
+
+		<a href="{{ path('app_home') }}">Retour à la liste des films</a>
+	{% endblock %}

@@ -24,6 +24,12 @@ class Movie
     #[ORM\Column(length: 255)]
     private ?string $Titre = null;
 
+
+
+
+    #[ORM\Column(type: 'string', nullable:true)]
+    private ?string $brochureFilename = null;
+
     #[ORM\ManyToMany(targetEntity: Salle::class)]
     private Collection $salles;
 
@@ -149,6 +155,18 @@ class Movie
     public function setDescription(string $Description): static
     {
         $this->Description = $Description;
+
+        return $this;
+    }
+
+    public function getBrochureFilename(): ?string
+    {
+        return $this->brochureFilename;
+    }
+
+    public function setBrochureFilename(?string $brochureFilename): self
+    {
+        $this->brochureFilename = $brochureFilename;
 
         return $this;
     }
