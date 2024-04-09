@@ -1,21 +1,27 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello HomeController!
+{% block title %}
+    Hello HomeController!
 {% endblock %}
 
 {% block body %}
-	{% if users is defined and users %}
-		<h1>Utilisateurs avec le rôle "cinema"</h1>
-		<ul>
+    {% if users is defined and users %}
+        <h1 class="text-center">Choisissez votre cinéma</h1>
 
-			{% for user in users %}
-				<li>{{ user.email }}</li>
-				<li>{{ user.nomcinema }}</li>
+        <div class="row justify-content-center">
+            {% for user in users %}
+                <div class="col-md-4">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ user.nomcinema }}</h5>
+                            <a href="{{ path('user_profile', { id: user.id }) }}" class="btn btn-primary">Voir le profil</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
 
-				<a href="{{ path('user_profile', { id: user.id }) }}">Voir le profil</a>
-			{% endfor %}
-		</ul>
-	{% else %}
-		<p>Aucun utilisateur avec le rôle "cinema" trouvé.</p>
-	{% endif %}
+    {% else %}
+        <p class="text-center">Aucun utilisateur avec le rôle "cinema" trouvé.</p>
+    {% endif %}
 {% endblock %}

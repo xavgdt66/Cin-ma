@@ -1,10 +1,33 @@
 {% extends 'base.html.twig' %}
-
-{% block title %}Profil de l'utilisateur{% endblock %}
+{% block title %}Profil de l'utilisateur
+{% endblock %}
 
 {% block body %}
-    <h1>{{ user.nomcinema }}</h1>
-    <p><strong>E-mail :</strong> {{ user.email }}</p>
+	<h1>{{ user.nomcinema }}</h1>
+	<p>
+		<strong>E-mail :</strong>
+		{{ user.email }}</p>
 
-
+	<h2>Films :</h2>
+	<ul>
+		{% for film in films %}
+			<li>
+				<img src="{{ asset('uploads/brochures/' ~ film.brochureFilename) }}" alt="Brochure" width="100"></li>
+			<li>{{ film.titre }}</li>
+			<ul>
+				{% for salle in film.salles %}
+					<li>Salle :
+						{{ salle.nom }}
+						({{ salle.nombrePlaces }}
+						places)</li>
+				{% endfor %}
+				{% for dateDiffusion in film.dateDiffusions %}
+					<li>Date de diffusion :
+						{{ dateDiffusion.date|date('Y-m-d') }}
+						à
+						{{ dateDiffusion.heureDebut|date('H:i') }}</li>
+				{% endfor %}
+			</ul>
+		{% endfor %}
+	</ul>
 {% endblock %}
