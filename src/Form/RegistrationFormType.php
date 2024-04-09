@@ -41,6 +41,8 @@ class RegistrationFormType extends AbstractType
                     ]),
                 ],
             ])
+            ->add('nomcinema')
+
             ->add('agreeTerms', CheckboxType::class, [
                 'mapped' => false,
                 'constraints' => [

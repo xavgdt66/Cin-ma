@@ -3,40 +3,8 @@
 {% block title %}Profil de l'utilisateur{% endblock %}
 
 {% block body %}
-    <h1>Profil de l'utilisateur</h1>
+    <h1>{{ user.nomcinema }}</h1>
     <p><strong>E-mail :</strong> {{ user.email }}</p>
 
-    
-    <ul>
-    {% for film in films %}
-        <li>
-            <strong>Titre :</strong> {{ film.titre }} <br>
-            <strong>Description :</strong> {{ film.description }} <br>
-            {% if film.salles is not empty %}
-                <strong>Salles :</strong>
-                <ul>
-                    {% for salle in film.salles %}
-                        <li>{{ salle.nom }} ({{ salle.nombreplaces }} places)</li>
-                    {% endfor %}
-                </ul>
-            {% else %}
-                <em>Aucune salle associée</em>
-            {% endif %}
-
-            {% if film.dateDiffusions is not empty %}
-                <strong>Dates de diffusion :</strong>
-                <ul>
-                    {% for dateDiffusion in film.dateDiffusions %}
-                        <li>{{ dateDiffusion.date|date('d/m/Y') }} à {{ dateDiffusion.heuredebut|date('H:i') }}</li>
-                    {% endfor %}
-                </ul>
-            {% else %}
-                <em>Aucune date de diffusion associée</em>
-            {% endif %}
-
-            <a href="{{ path('app_movie_show', {'id': film.id}) }}">En savoir plus</a>
-        </li>
-    {% endfor %}
-</ul>
 
 {% endblock %}

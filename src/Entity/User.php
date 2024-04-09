@@ -28,6 +28,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Movie::class, mappedBy: "user")] // Relation avec la "private $user;" de l'entity Movie
     private $movies;
 
+
+    #[ORM\Column(type: "string", length: 255)]
+    private $nomcinema;
+
+
     /********DEBUT SALLES********************/
 
     #[ORM\OneToMany(targetEntity: Salle::class, mappedBy: "user")] // Relation avec la "private $user;" de l'entity Salle
@@ -72,6 +77,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /********FIN SALLES********************/
+
+    public function getnomcinema(): ?string
+    {
+        return $this->nomcinema;
+    }
+
+    public function setnomcinema(string $nomcinema): static
+    {
+        $this->nomcinema = $nomcinema;
+
+        return $this;
+    }
 
     /******* DEBUT MOVIEs *************/
 

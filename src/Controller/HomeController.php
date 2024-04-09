@@ -16,22 +16,14 @@ class HomeController extends AbstractController
     #[Route('/', name: 'app_home')]
     public function usersWithRoleCinema(EntityManagerInterface $entityManager): Response
     {
-        $userRepository = $entityManager->getRepository(User::class);
-        $usersWithRoleCinema = $userRepository->findByRole('ROLE_CINEMA');
-    
-        $userData = [];
-        foreach ($usersWithRoleCinema as $user) { 
-            $userData[] = [
-                'email' => $user->getEmail(),
-                'id' => $user->getId() 
-            ];
-        }
+        $userRepository = $entityManager->getRepository(User::class); // Recup user 
+        $usersWithRoleCinema = $userRepository->findByRole('ROLE_CINEMA'); // Recup user cinema 
     
         return $this->render('home/index.html.twig', [
-            'users' => $userData, 
+            'users' => $usersWithRoleCinema,
         ]);
     }
-
+    
     
   
 
