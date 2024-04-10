@@ -55,11 +55,12 @@ class MovieType extends AbstractType
                         'maxSize' => '2048k', // augmentez la taille si nécessaire
                         'mimeTypes' => [
                             'image/png',
+                            'image/jpeg',
                         ],
                         'mimeTypesMessage' => 'Please upload a valid PNG image',
                     ])
                 ],
-            ]);;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

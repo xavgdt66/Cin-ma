@@ -24,8 +24,16 @@
 	<p>Capacité de la salle :
 		{{ movie.salles.first().nombrePlaces }}</p>
 
-	<h2>Réserver des places</h2>
-	{{ form(reservation_form) }}
+<h2>Réserver des places</h2>
+
+{{ form_start(reservation_form) }}
+
+{{ form_errors(reservation_form) }}
+
+{{ form_widget(reservation_form) }}
+
+{{ form_end(reservation_form) }}
+
 
 		<a href="{{ path('app_home') }}">Retour à la liste des films</a>
 	{% endblock %}

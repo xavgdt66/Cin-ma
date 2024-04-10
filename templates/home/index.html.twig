@@ -12,8 +12,8 @@
             {% for user in users %}
                 <div class="col-md-4">
                     <div class="card mb-3">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ user.nomcinema }}</h5>
+                        <div class="card-body d-flex flex-column align-items-center justify-content-center">
+                            <h5 class="card-title text-center">{{ user.nomcinema }}</h5>
                             <a href="{{ path('user_profile', { id: user.id }) }}" class="btn btn-primary">Voir le profil</a>
                         </div>
                     </div>

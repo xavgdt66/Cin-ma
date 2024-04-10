@@ -25,13 +25,16 @@ class ReservationController extends AbstractController
     #[Route('/reservation/{id}', name: 'reservation_film')]
     public function reserve(Request $request, Movie $movie): Response
     {
-        $maxPlaces = $movie->getSalles()->first()->getNombrePlaces(); // Exemple, à adapter selon votre modèle
+        $maxPlaces = $movie->getSalles()->first()->getNombrePlaces(); 
 
         $form = $this->createForm(ReservationFormType::class, null, ['max_places' => $maxPlaces]); 
         $form->handleRequest($request);
 
+        dump($form->getData());
+
+
         if ($form->isSubmitted() && $form->isValid()) {
-            dump($form->getData());
+            //dump($form->getData());
 
             $reservation = new Reservation();
 
