@@ -15,9 +15,9 @@ use Symfony\Bundle\SecurityBundle\Security;
 
 
 
-use Symfony\Component\String\Slugger\SluggerInterface; 
+use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
-use Symfony\Component\HttpFoundation\File\UploadedFile; 
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 
 
@@ -33,7 +33,8 @@ class MovieController extends AbstractController
         $this->entityManager = $entityManager;
         $this->security = $security;
     }
-/*
+
+
     #[Route('/addmovie', name: 'app_movie')]
     public function addmovie(Request $request, EntityManagerInterface $em, Security $security, SluggerInterface $slugger): Response
     {
@@ -46,32 +47,32 @@ class MovieController extends AbstractController
 
         $movie = new Movie(); // Instance de Movie 
 
-        $movie->setUser($this->getUser()); // Instance de Movie recupere l'user courant
+        $movie->setUser($this->getUser()); // Instance de Movie récupère l'utilisateur courant
 
         $dateDiffusion = new DateDiffusion(); // Instance de DateDiffusion 
-        $movie->addDateDiffusion($dateDiffusion); // Movie ajoute uen heure + date sur DateDiffusion
+        $movie->addDateDiffusion($dateDiffusion); // Movie ajoute une heure + date sur DateDiffusion
 
         $user = $this->getUser();
-        $salles = $user->getSalles(); // Recup les salles 
+        $salles = $user->getSalles(); // Récupère les salles 
 
         $form = $this->createForm(MovieType::class, $movie, ['salles' => $salles]);
         $form->handleRequest($request);
-
-
 
         if ($form->isSubmitted() && $form->isValid()) {
             $movie->getDateDiffusions()->map(function ($dateDiffusion) use ($movie) {
                 $dateDiffusion->setMovie($movie);
             });
-    
+
             $brochureFile = $form->get('brochure')->getData();
-    
+
+            // Cette condition est nécessaire car le champ 'brochure' n'est pas requis
+            // Donc le fichier PDF doit être traité uniquement lorsqu'un fichier est téléchargé
             if ($brochureFile) {
                 $originalFilename = pathinfo($brochureFile->getClientOriginalName(), PATHINFO_FILENAME);
-                
-                $safeFilename = $slugger->slug($originalFilename); 
+                // Ceci est nécessaire pour inclure en toute sécurité le nom de fichier en tant que partie de l'URL
+                $safeFilename = $slugger->slug($originalFilename);
                 $newFilename = $safeFilename . '-' . uniqid() . '.' . $brochureFile->guessExtension();
-    
+
                 // Déplacer le fichier vers le répertoire où les brochures sont stockées
                 try {
                     $brochureFile->move(
@@ -81,7 +82,7 @@ class MovieController extends AbstractController
                 } catch (FileException $e) {
                     // ... gérer l'exception si quelque chose se passe mal lors du téléchargement du fichier
                 }
-    
+
                 // Met à jour la propriété 'brochureFilename' pour stocker le nom du fichier PDF
                 // au lieu de son contenu
                 $movie->setBrochureFilename($newFilename);
@@ -96,71 +97,7 @@ class MovieController extends AbstractController
         return $this->render('movie/new.html.twig', [
             'form' => $form->createView()
         ]);
-    }*/
-
-    #[Route('/addmovie', name: 'app_movie')]
-public function addmovie(Request $request, EntityManagerInterface $em, Security $security, SluggerInterface $slugger): Response
-{
-
-    $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
-
-    if (!$security->isGranted('ROLE_CINEMA') && !$security->isGranted('ROLE_ADMIN')) {
-        return $this->redirectToRoute('app_home');
     }
-
-    $movie = new Movie(); // Instance de Movie 
-
-    $movie->setUser($this->getUser()); // Instance de Movie récupère l'utilisateur courant
-
-    $dateDiffusion = new DateDiffusion(); // Instance de DateDiffusion 
-    $movie->addDateDiffusion($dateDiffusion); // Movie ajoute une heure + date sur DateDiffusion
-
-    $user = $this->getUser();
-    $salles = $user->getSalles(); // Récupère les salles 
-
-    $form = $this->createForm(MovieType::class, $movie, ['salles' => $salles]);
-    $form->handleRequest($request);
-
-    if ($form->isSubmitted() && $form->isValid()) {
-        $movie->getDateDiffusions()->map(function ($dateDiffusion) use ($movie) {
-            $dateDiffusion->setMovie($movie);
-        });
-
-        $brochureFile = $form->get('brochure')->getData();
-
-        // Cette condition est nécessaire car le champ 'brochure' n'est pas requis
-        // Donc le fichier PDF doit être traité uniquement lorsqu'un fichier est téléchargé
-        if ($brochureFile) {
-            $originalFilename = pathinfo($brochureFile->getClientOriginalName(), PATHINFO_FILENAME);
-            // Ceci est nécessaire pour inclure en toute sécurité le nom de fichier en tant que partie de l'URL
-            $safeFilename = $slugger->slug($originalFilename);
-            $newFilename = $safeFilename . '-' . uniqid() . '.' . $brochureFile->guessExtension();
-
-            // Déplacer le fichier vers le répertoire où les brochures sont stockées
-            try {
-                $brochureFile->move(
-                    $this->getParameter('brochures_directory'),
-                    $newFilename
-                );
-            } catch (FileException $e) {
-                // ... gérer l'exception si quelque chose se passe mal lors du téléchargement du fichier
-            }
-
-            // Met à jour la propriété 'brochureFilename' pour stocker le nom du fichier PDF
-            // au lieu de son contenu
-            $movie->setBrochureFilename($newFilename);
-        }
-
-        $em->persist($movie);
-        $em->flush();
-
-        $this->addFlash('success', 'Le film a bien été ajouté avec ses dates de diffusion.');
-        return $this->redirectToRoute('app_home');
-    }
-    return $this->render('movie/new.html.twig', [
-        'form' => $form->createView()
-    ]);
-}
 
     #[Route('/movie/{id}', name: 'app_movie_show')]
     public function showMovie($id, EntityManagerInterface $em): Response
