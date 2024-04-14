@@ -1,21 +1,32 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Éditer la salle {{ salle.nom }}{% endblock %}
+{% block title %}Éditer la salle
+	{{ salle.nom }}
+{% endblock %}
 
 {% block body %}
-<div class="container">
-    <h1 class="mt-4 mb-4">Éditer la salle "{{ salle.nom }}"</h1>
+	<div style="margin-top: 20px;"></div>
 
-    {{ form_start(form) }}
-    <div class="form-group">
-        {{ form_label(form.nom, 'Nom de la salle') }}
-        {{ form_widget(form.nom, { 'attr': {'class': 'form-control'} }) }}
-    </div>
-    <div class="form-group">
-        {{ form_label(form.nombrePlaces, 'Nombre de places') }}
-        {{ form_widget(form.nombrePlaces, { 'attr': {'class': 'form-control'} }) }}
-    </div>
-    <button type="submit" class="btn btn-primary">Enregistrer</button>
-    {{ form_end(form) }}
-</div>
+	<div class="container">
+		<h1 class="mt-4 mb-4">Éditer la salle "{{ salle.nom }}"</h1>
+
+		{{ form_start(form) }}
+
+		<div class="form-group">
+			{{ form_label(form.nom, 'Nom de la salle', {'label_attr': {'style': 'font-family: "Permanent Marker", cursive; color: #fbae00;'}}) }}
+			{{ form_widget(form.nom, { 'attr': {'class': 'form-control', 'style': 'background-color: #fbae00; color: #000a32;'} }) }}
+		</div>
+
+		<div class="form-group">
+			{{ form_label(form.nombrePlaces, 'Nombre de places', {'label_attr': {'style': 'font-family: "Permanent Marker", cursive; color: #fbae00;'}}) }}
+			{{ form_widget(form.nombrePlaces, { 'attr': {'class': 'form-control', 'style': 'background-color: #fbae00; color: #000a32;'} }) }}
+		</div>
+		<div style="margin-top: 5px;"></div>
+
+		<button type="submit" class="btn btn-primary" style="background-color: #fbae00;">Enregistrer</button>
+		{{ form_end(form) }}
+	</div>
+
+	<div style="margin-top: 20px;"></div>
+
 {% endblock %}

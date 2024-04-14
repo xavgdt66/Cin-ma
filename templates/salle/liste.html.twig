@@ -1,32 +1,36 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Liste des salles{% endblock %}
+{% block title %}Liste des salles
+{% endblock %}
 
 {% block body %}
-<div class="container">
-    <h1 class="mt-4 mb-4">Liste des salles</h1>
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th scope="col">Nom</th>
-                <th scope="col">Nombre de places</th>
-                <th scope="col">Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for salle in salles %}
-            <tr>
-                <td>{{ salle.nom }}</td>
-                <td>{{ salle.nombrePlaces }}</td>
-                <td>
-                    <a href="{{ path('editer_salle', {'id': salle.id}) }}" class="btn btn-sm btn-primary">Éditer</a>
-                    <a href="{{ path('supprimer_salle', {'id': salle.id}) }}" class="btn btn-sm btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette salle ?')">Supprimer</a>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    <a href="{{ path('ajouter_salle') }}" class="btn btn-success">Ajouter une salle</a>
-</div>
+	<div style="margin-top: 40px;"></div>
+	<div class="container">
+		<h1 class="mt-4 mb-4" style="color: #fbae00; font-family: 'Permanent Marker', cursive;">Liste des salles</h1>
+		<table class="table" style="background-color: #000a32;">
+			<thead>
+				<tr>
+					<th scope="col" style="color: #fbae00; font-family: 'Permanent Marker', cursive; background-color: #000a32;">Nom
+					</th>
+					<th scope="col" style="color: #fbae00; font-family: 'Permanent Marker', cursive; background-color: #000a32;">Nombre de place
+					</th>
+					<th scope="col" style="color: #fbae00; font-family: 'Permanent Marker', cursive; background-color: #000a32;">Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for salle in salles %}
+					<tr>
+						<td style="color: #fbae00; font-family: 'Permanent Marker', cursive; background-color: #000a32;">{{ salle.nom }}</td>
+						<td style="color: #fbae00; font-family: 'Permanent Marker', cursive; background-color: #000a32;">{{ salle.nombrePlaces }}</td>
+						<td style="color: #fbae00; font-family: 'Permanent Marker', cursive; background-color: #000a32;">
+							<a href="{{ path('editer_salle', {'id': salle.id}) }}" class="btn btn-sm btn-primary" style="border-color: #fbae00;">Éditer</a>
+							<a href="{{ path('supprimer_salle', {'id': salle.id}) }}" class="btn btn-sm btn-danger" style="border-color: #fbae00;" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette salle ?')">Supprimer</a>
+						</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		<a href="{{ path('ajouter_salle') }}" class="btn btn-success" style="background-color: #000a32; border-color: #fbae00; color: #fbae00; font-family: 'Permanent Marker', cursive;">Ajouter une salle</a>
+	</div>
+	<div style="margin-top: 40px;"></div>
 {% endblock %}

@@ -1,27 +1,28 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Profil de l'utilisateur{% endblock %}
+{% block title %}
+	Profil de l'utilisateur
+{% endblock %}
 
 {% block body %}
-    <h1>{{ user.nomcinema }}</h1>
-    <p><strong>E-mail :</strong> {{ user.email }}</p>
-
-    <h2>Films :</h2>
-    <ul>
-        {% for film in films %}
-            <li>
-                <img src="{{ asset('uploads/brochures/' ~ film.brochureFilename) }}" alt="Brochure" width="100">
-                {{ film.titre }}
-                <ul>
-                    {% for salle in film.salles %}
-                        <li>Salle : {{ salle.nom }} ({{ salle.nombrePlaces }} places)</li>
-                    {% endfor %}
-                    {% for dateDiffusion in film.dateDiffusions %}
-                        <li>Date de diffusion : {{ dateDiffusion.date|date('Y-m-d') }} à {{ dateDiffusion.heureDebut|date('H:i') }}</li>
-                    {% endfor %}
-                </ul>
-                <a href="{{ path('app_movie_show', {'id': film.id}) }}">En savoir plus</a>
-            </li>
-        {% endfor %}
-    </ul>
+	<div style="margin-top: 60px;"></div>
+	<h1 class="text-center" style="color: #fbae00; font-family: 'Permanent Marker', cursive;">{{ user.nomcinema }}</h1>
+	<h2 class="text-center" style="color: #fbae00; font-family: 'Permanent Marker', cursive;">Les films que propose votre cinéma</h2>
+	<div class="row justify-content-center">
+		{% for film in films %}
+			<div class="col-md-1 mb-1" style="background-color: #000a32">
+				<div class="card" style="background-color: #000a32">
+					<img src="{{ asset('uploads/brochures/' ~ film.brochureFilename) }}" class="card-img-top" alt="Brochure" width="200" height="200">
+					<div class="card-body">
+						<a href="{{ path('app_movie_show', {'id': film.id}) }}" class="btn btn-primary" style="background-color:  #fbae00; border-color: #fbae00; color: #000a32; font-family: 'Permanent Marker', cursive;">Reserver</a>
+					</div>
+				</div>
+			</div>
+			{% if loop.index % 4 == 0 %}
+			</div>
+			<div class="row justify-content-center">
+			{% endif %}
+		{% endfor %}
+	</div>
+	<div style="margin-top: 60px;"></div>
 {% endblock %}
