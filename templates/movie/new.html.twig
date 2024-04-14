@@ -1,22 +1,62 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Ajouter un film{% endblock %}
+{% block title %}
+	Ajouter un film
+{% endblock %}
 
 {% block body %}
+	<div style="margin-top: 20px;"></div>
 
-    <h1>Ajouter un film</h1>
-    {{ form_start(form) }}
-    {{ form_row(form.Titre) }}
-    {{ form_row(form.Description) }}
-    {{ form_row(form.brochure) }} 
+	<div class="container">
+		<div class="row justify-content-center">
+			<div class="col-md-6">
+				<h1 class="text-center" id="TitleAddmovie">Ajouter un film</h1>
+				{{ form_start(form, {'attr': {'class': 'row g-3'}}) }}
 
+				<div class="mb-3">
+					{{ form_label(form.Titre, null, {'label_attr': {'style': 'font-family: "Permanent Marker", cursive; color: #fbae00;'}}) }}
+					{{ form_widget(form.Titre, {'attr': {'class': 'form-control', 'style': 'background-color: #fbae00; color: #000a32;'}}) }}
+				</div>
 
-    {# Boucle sur chaque date de diffusion et affichez les champs associés #}
-    {% for dateDiffusionForm in form.dateDiffusions %}
-        {{ form_row(dateDiffusionForm.date) }}
-        {{ form_row(dateDiffusionForm.heureDebut) }}
-    {% endfor %}
+				<div class="mb-3">
+					{{ form_label(form.Description, null, {'label_attr': {'style': 'font-family: "Permanent Marker", cursive; color: #fbae00;'}}) }}
+					{{ form_widget(form.Description, {'attr': {'class': 'form-control', 'style': 'background-color: #fbae00; color: #000a32;'}}) }}
+				</div>
 
-    <button type="submit">Créer</button>
-    {{ form_end(form) }}
+				<div class="mb-3">
+					{{ form_label(form.salles, null, {'label_attr': {'style': 'font-family: "Permanent Marker", cursive; color: #fbae00;'}}) }}
+					{{ form_widget(form.salles, {'attr': {'class': 'form-control', 'style': 'background-color: #fbae00; color: #000a32;'}}) }}
+				</div>
+
+				<div class="mb-3">
+					{{ form_label(form.brochure, null, {'label_attr': {'style': 'font-family: "Permanent Marker", cursive; color: #fbae00;'}}) }}
+					{{ form_widget(form.brochure, {'attr': {'class': 'form-control', 'style': 'background-color: #fbae00; color: #000a32;'}}) }}
+				</div>
+
+				{% for dateDiffusionForm in form.dateDiffusions %}
+					<div class="mb-3">
+						{{ form_label(dateDiffusionForm.date, null, {'label_attr': {'style': 'font-family: "Permanent Marker", cursive; color: #fbae00;'}}) }}
+						{{ form_widget(dateDiffusionForm.date, {'attr': {'class': 'form-control', 'style': 'background-color: #fbae00; color: #000a32;'}}) }}
+					</div>
+
+					<div class="mb-3">
+						{{ form_label(dateDiffusionForm.heureDebut, null, {'label_attr': {'style': 'font-family: "Permanent Marker", cursive; color: #fbae00;'}}) }}
+						{{ form_widget(dateDiffusionForm.heureDebut, {'attr': {'class': 'form-control', 'style': 'background-color: #fbae00; color: #000a32;'}}) }}
+					</div>
+				{% endfor %}
+
+				<button type="submit" class="btn btn-primary" style="background-color: #fbae00;">Créer</button>
+				{{ form_end(form) }}
+			</div>
+		</div>
+	</div>
+
+	<div style="margin-top: 40px;"></div>
+
+	<style>
+		#TitleAddmovie {
+			font-family: "Permanent Marker";
+			color: #fbae00
+		}
+	</style>
 {% endblock %}

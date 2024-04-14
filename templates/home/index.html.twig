@@ -1,27 +1,71 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    Hello HomeController!
+	Hello HomeController!
 {% endblock %}
 
 {% block body %}
-    {% if users is defined and users %}
-        <h1 class="text-center">Choisissez votre cinéma</h1>
 
-        <div class="row justify-content-center">
-            {% for user in users %}
-                <div class="col-md-4">
-                    <div class="card mb-3">
-                        <div class="card-body d-flex flex-column align-items-center justify-content-center">
-                            <h5 class="card-title text-center">{{ user.nomcinema }}</h5>
-                            <a href="{{ path('user_profile', { id: user.id }) }}" class="btn btn-primary">Voir le profil</a>
-                        </div>
-                    </div>
-                </div>
-            {% endfor %}
-        </div>
 
-    {% else %}
-        <p class="text-center">Aucun utilisateur avec le rôle "cinema" trouvé.</p>
-    {% endif %}
+	{% if users is defined and users %}
+		<h1 class="text-center" id="titlehomepage">Choisissez votre cinéma</h1>
+
+		<div class="outer-card">
+			<div class="row justify-content-center">
+				{% set card_count = 0 %}
+				{% for user in users %}
+					{% if card_count % 2 == 0 %}
+					</div>
+					<div class="row justify-content-center">
+					{% endif %}
+					<div class="col-md-4">
+						<div class="card mb-3">
+							<div class="card-body d-flex flex-column align-items-center justify-content-center">
+								<h5 class="card-title text-center">{{ user.nomcinema }}</h5>
+								<a href="{{ path('user_profile', { id: user.id }) }}" class="btn btn-primary btn-voir-profil">Voir le cinema</a>
+							</div>
+						</div>
+					</div>
+					{% set card_count = card_count + 1 %}
+				{% endfor %}
+			</div>
+		</div>
+
+	{% else %}
+		<p class="text-center">Aucun utilisateur avec le rôle "cinema" trouvé.</p>
+	{% endif %}
+
+
+	<style>
+
+		.outer-card {
+			background-color: #fbae00;
+			padding: 20px;
+			margin-bottom: 20px;
+		}
+
+		.card {
+			background-color: #000a32;
+			color: white;
+		}
+
+
+		#titlehomepage {
+			font-family: "Permanent Marker", cursive;
+			color: #fbae00
+		}
+		h5 {
+			font-family: "Permanent Marker", cursive;
+
+		}
+		a {
+			font-family: "Permanent Marker", cursive;
+
+		}
+		.btn-voir-profil {
+			background-color: #fbae00;
+			font-family: "Permanent Marker", cursive;
+		}
+	</style>
+
 {% endblock %}

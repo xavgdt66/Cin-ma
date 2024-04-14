@@ -1,21 +1,47 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Éditer le film {{ movie.Titre }}{% endblock %}
+{% block title %}
+	Éditer le film
+	{{ movie.Titre }}
+{% endblock %}
 
 {% block body %}
-<div class="container">
-    <h1 class="mt-4 mb-4">Éditer le film "{{ movie.Titre }}"</h1>
+	<div class="container">
+		<h1 class="mt-4 mb-4">Éditer le film "{{ movie.Titre }}"</h1>
 
-    {{ form_start(form) }}
-    <div class="form-group">
-        {{ form_label(form.Titre, 'Nom du film') }}
-        {{ form_widget(form.Titre, { 'attr': {'class': 'form-control'} }) }}
-    </div>
-    <div class="form-group">
-        {{ form_label(form.Description, 'description') }}
-        {{ form_widget(form.Description, { 'attr': {'class': 'form-control'} }) }}
-    </div>
-    <button type="submit" class="btn btn-primary">Enregistrer</button>
-    {{ form_end(form) }}
-</div>
+		{{ form_start(form) }}
+		<div class="form-group">
+			{{ form_label(form.Titre, 'Nom du film', {'label_attr': {'style': 'font-family: "Permanent Marker", cursive; color: #fbae00;'}}) }}
+			{{ form_widget(form.Titre, { 'attr': {'class': 'form-control', 'style': 'background-color: #fbae00; color: #000a32;'} }) }}
+		</div>
+		<div class="form-group">
+			{{ form_label(form.Description, 'Description', {'label_attr': {'style': 'font-family: "Permanent Marker", cursive; color: #fbae00;'}}) }}
+			{{ form_widget(form.Description, { 'attr': {'class': 'form-control', 'style': 'background-color: #fbae00; color: #000a32;'} }) }}
+		</div>
+
+		<div class="form-group">
+			{{ form_label(form.salles, 'Description', {'label_attr': {'style': 'font-family: "Permanent Marker", cursive; color: #fbae00;'}}) }}
+			{{ form_widget(form.salles, { 'attr': {'class': 'form-control', 'style': 'background-color: #fbae00; color: #000a32;'} }) }}
+		</div>
+
+		<div class="form-group">
+			{{ form_label(form.brochure, 'Description', {'label_attr': {'style': 'font-family: "Permanent Marker", cursive; color: #fbae00;'}}) }}
+			{{ form_widget(form.brochure, { 'attr': {'class': 'form-control', 'style': 'background-color: #fbae00; color: #000a32;'} }) }}
+		</div>
+
+		{% for dateDiffusionForm in form.dateDiffusions %}
+			<div class="mb-3">
+				{{ form_label(dateDiffusionForm.date, null, {'label_attr': {'style': 'font-family: "Permanent Marker", cursive; color: #fbae00;'}}) }}
+				{{ form_widget(dateDiffusionForm.date, {'attr': {'class': 'form-control', 'style': 'background-color: #fbae00; color: #000a32;'}}) }}
+			</div>
+
+			<div class="mb-3">
+				{{ form_label(dateDiffusionForm.heureDebut, null, {'label_attr': {'style': 'font-family: "Permanent Marker", cursive; color: #fbae00;'}}) }}
+				{{ form_widget(dateDiffusionForm.heureDebut, {'attr': {'class': 'form-control', 'style': 'background-color: #fbae00; color: #000a32;'}}) }}
+			</div>
+		{% endfor %}
+
+		<button type="submit" class="btn btn-primary" style="background-color: #fbae00;">Enregistrer</button>
+		{{ form_end(form) }}
+	</div>
 {% endblock %}

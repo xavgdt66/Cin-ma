@@ -1,32 +1,38 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Liste des films{% endblock %}
+{% block title %}
+	Liste des films
+{% endblock %}
 
 {% block body %}
-<div class="container">
-    <h1 class="mt-4 mb-4">Liste des films</h1>
+	<div style="margin-top: 40px;"></div>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th scope="col">Nom du film</th>
-                <th scope="col">Nombre de places</th>
-                <th scope="col">Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for movie in movies %}
-            <tr>
-                <td>{{ movie.Titre }}</td>
-                <td>{{ movie.Description }}</td>
-                <td>
-                    <a href="{{ path('editer_movie', {'id': movie.id}) }}" class="btn btn-sm btn-primary">Éditer</a>
-                    <a href="{{ path('supprimer_movie', {'id': movie.id}) }}" class="btn btn-sm btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette salle ?')">Supprimer</a>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    <a href="{{ path('app_movie') }}" class="btn btn-success">Ajoute une Film</a>
-</div>
+	<div class="container">
+		<h1 class="mt-4 mb-4" style="color: #fbae00; font-family: 'Permanent Marker', cursive;">Liste des films</h1>
+
+		<table class="table" style="background-color: #000a32;">
+			<thead>
+				<tr>
+					<th scope="col" style="color: #fbae00; font-family: 'Permanent Marker', cursive; background-color: #000a32;">Nom du film</th>
+					<th scope="col" style="color: #fbae00; font-family: 'Permanent Marker', cursive; background-color: #000a32;">Description</th>
+					<th scope="col" style="color: #fbae00; font-family: 'Permanent Marker', cursive; background-color: #000a32;">Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for movie in movies %}
+					<tr>
+						<td style="color: #fbae00; font-family: 'Permanent Marker', cursive; background-color: #000a32;">{{ movie.Titre }}</td>
+						<td style="color: #fbae00; font-family: 'Permanent Marker', cursive; background-color: #000a32;">{{ movie.Description }}</td>
+						<td style="color: #fbae00; font-family: 'Permanent Marker', cursive; background-color: #000a32;">
+							<a href="{{ path('editer_movie', {'id': movie.id}) }}" class="btn btn-sm btn-primary" style="border-color: #fbae00;">Éditer</a>
+							<a href="{{ path('supprimer_movie', {'id': movie.id}) }}" class="btn btn-sm btn-danger" style="border-color: #fbae00;" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette salle ?')">Supprimer</a>
+						</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		<a href="{{ path('app_movie') }}" class="btn btn-success" style="background-color: #000a32; border-color: #fbae00; color: #fbae00; font-family: 'Permanent Marker', cursive;">Ajouter un film</a>
+	</div>
+    	<div style="margin-top: 40px;"></div>
+
 {% endblock %}

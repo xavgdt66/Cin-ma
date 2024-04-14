@@ -23,32 +23,33 @@ class ReservationController extends AbstractController
     }
 
     #[Route('/reservation/{id}', name: 'reservation_film')]
-public function reserve(Request $request, Movie $movie): Response
-{
-    $maxPlaces = $movie->getSalles()->first()->getNombrePlaces(); 
+    public function reserve(Request $request, Movie $movie): Response
+    {
+        $reservation = new Reservation();
 
-    $form = $this->createForm(ReservationFormType::class, null, ['max_places' => $maxPlaces]); 
-    $form->handleRequest($request);
+        $maxPlaces = $movie->getSalles()->first()->getNombrePlaces();
 
-    //dump($form->isSubmitted(), $form->isValid()); // Ajout de cette ligne pour déboguer
+        $form = $this->createForm(ReservationFormType::class, $reservation, [
+            'action' => $this->generateUrl('reservation_film', ['id' => $movie->getId()]),
+            'max_places' => $maxPlaces
+        ]);
 
-    if (dump($form->isSubmitted() && $form->isValid())) {
-        $reservation = new Reservation(); 
+        $form->handleRequest($request);
 
-        $reservation->setMovie($movie);
-        $reservation->setNumberOfSeats($form->get('nombrePlaces')->getData());
+        if (dump($form->isSubmitted() && $form->isValid())) {
 
-        $this->entityManager->persist($reservation);
-        $this->entityManager->flush();
+            $reservation->setMovie($movie);
+            $reservation->setNumberOfSeats($form->get('nombrePlaces')->getData());
 
-        return $this->redirectToRoute('app_home');
+            $this->entityManager->persist($reservation);
+            $this->entityManager->flush();
+
+            return $this->redirectToRoute('app_home');
+        }
+
+        return $this->render('reservation/reserve.html.twig', [
+            'form' => $form->createView(),
+            'movie' => $movie,
+        ]);
     }
-
-    return $this->render('reservation/reserve.html.twig', [
-        'form' => $form->createView(),
-        'movie' => $movie,
-    ]);
-}
-
-    
 }
