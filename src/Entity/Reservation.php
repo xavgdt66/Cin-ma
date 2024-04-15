@@ -1,8 +1,5 @@
 <?php
 
-
-
-
 namespace App\Entity;
 
 use App\Repository\ReservationRepository;
@@ -21,11 +18,17 @@ class Reservation
     #[ORM\JoinColumn(nullable: false)]
     private $movie;
 
+   
+///////////////////////////////////
+
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: "reservations")] // Relation avec la "private $reservations;" de l'entity User
+    #[ORM\JoinColumn(nullable: false)]
+
+    private $user;
+
+///////////////////////////////////////
     #[ORM\Column(type: "integer")]
-
     private $numberOfSeats;
-
-    // Ajoutez d'autres propriétés et méthodes si nécessaire
 
     public function getId(): ?int
     {
@@ -52,6 +55,18 @@ class Reservation
     public function setNumberOfSeats(int $numberOfSeats): self
     {
         $this->numberOfSeats = $numberOfSeats;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

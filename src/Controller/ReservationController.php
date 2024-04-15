@@ -12,6 +12,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\SecurityBundle\Security; 
+
 
 class ReservationController extends AbstractController
 {
@@ -20,9 +22,43 @@ class ReservationController extends AbstractController
     public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
-    } 
+    }
 
-    #[Route('/reservation/{id}', name: 'reservation_film')]
+
+
+    #[Route('/reservations', name: 'app_reservation_index')]
+    public function index(): Response
+    {
+        $user = $this->getUser();
+
+        $entityManager = $this->entityManager;
+
+        $userReservations = $entityManager->getRepository(Reservation::class)->findBy(['user' => $user]);
+
+        return $this->render('reservation/index.html.twig', [
+            'user_reservations' => $userReservations,
+        ]);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /*#[Route('/reservation/{id}', name: 'reservation_film')]
     public function reserve(Request $request, Movie $movie): Response
     {
         $reservation = new Reservation();
@@ -51,8 +87,9 @@ class ReservationController extends AbstractController
             'form' => $form->createView(),
             'movie' => $movie,
         ]);
-    }
+    }*/
 
 
-
+    
+   
 }

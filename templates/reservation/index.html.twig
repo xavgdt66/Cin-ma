@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes Réservations{% endblock %}
+
+{% block body %}
+	<div style="margin-top: 40px;"></div>
+
+    <h1 style="color: #fbae00; font-family: 'Permanent Marker', cursive;">Mes Réservations</h1>
+    
+    {% if user_reservations is empty %}
+        <p >Aucune réservation trouvée.</p>
+    {% else %}
+        <ul style="color: #fbae00; font-family: 'Permanent Marker', cursive;">
+            {% for reservation in user_reservations %}
+                <li>{{ reservation.movie.titre }} - {{ reservation.numberOfSeats }} places - Dates de diffusion :
+                    <ul>
+                        {% for dateDiffusion in reservation.movie.dateDiffusions %}
+                            <li>Date: {{ dateDiffusion.date|date('d/m/Y') }} - Heure: {{ dateDiffusion.heureDebut|date('H:i') }}</li>
+                        {% endfor %}
+                    </ul>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+     	<div style="margin-top: 40px;"></div>
+
+{% endblock %}

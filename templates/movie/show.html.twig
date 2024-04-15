@@ -1,36 +1,50 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    Détails du film : {{ movie.Titre }}
+	Détails du film :
+	{{ movie.Titre }}
 {% endblock %}
 
 {% block body %}
-    <div class="container d-flex justify-content-center align-items-center vh-100">
-        <div class="text-center">
-            <h1 style="color: #fbae00; font-family: 'Permanent Marker', cursive;">{{ movie.Titre }}</h1>
+	<div class="container d-flex justify-content-center align-items-center vh-100">
+		<div class="text-center">
+			<h1 style="color: #fbae00; font-family: 'Permanent Marker', cursive;">{{ movie.Titre }}</h1>
 
-            {% if movie.brochureFilename %}
-                <img src="{{ asset('/uploads/brochures/' ~ movie.brochureFilename) }}" alt="Brochure" width="265" height="398">
-            {% else %}
-                <p style="color: #fbae00; font-family: 'Permanent Marker', cursive;">Aucune image disponible</p>
-            {% endif %}
+			{% if movie.brochureFilename %}
+				<img src="{{ asset('/uploads/brochures/' ~ movie.brochureFilename) }}" alt="Brochure" width="265" height="398">
+			{% else %}
+				<p style="color: #fbae00; font-family: 'Permanent Marker', cursive;">Aucune image disponible</p>
+			{% endif %}
 
-            <p style="color: #fbae00; font-family: 'Permanent Marker', cursive;">Description : {{ movie.Description }}</p>
-            <p style="color: #fbae00; font-family: 'Permanent Marker', cursive;">Date de diffusion : {{ movie.dateDiffusions.first().date|date('Y-m-d H:i') }}</p>
-            <p style="color: #fbae00; font-family: 'Permanent Marker', cursive;">Salle : {{ movie.salles.first().nom }}</p>
-            <p style="color: #fbae00; font-family: 'Permanent Marker', cursive;">Capacité de la salle : {{ movie.salles.first().nombrePlaces }}</p>
+			<p style="color: #fbae00; font-family: 'Permanent Marker', cursive;">Description :
+				{{ movie.Description }}</p>
+			<p style="color: #fbae00; font-family: 'Permanent Marker', cursive;">Date de diffusion :
+				{{ movie.dateDiffusions.first().date|date('Y-m-d H:i') }}</p>
+			<p style="color: #fbae00; font-family: 'Permanent Marker', cursive;">Salle :
+				{{ movie.salles.first().nom }}</p>
+			<p style="color: #fbae00; font-family: 'Permanent Marker', cursive;">Capacité de la salle :
+				{{ movie.salles.first().nombrePlaces }}</p>
 
-            <h2 style="color: #fbae00; font-family: 'Permanent Marker', cursive;">Réserver des places</h2>
+			<h2 style="color: #fbae00; font-family: 'Permanent Marker', cursive;">Réserver des places</h2>
 
-            {{ form_start(reservation_form) }}
 
-            {{ form_errors(reservation_form) }}
+			{{ form_start(reservation_form) }}
+			{{ form_errors(reservation_form) }}
 
-            {{ form_widget(reservation_form) }}
+			{% for field in reservation_form %}
+				<div style="margin-top: 20px;"></div>
+				{{ form_widget(field, {'attr': {'style': 'color: #fbae00'}}) }}
+			{% endfor %}
 
-            {{ form_end(reservation_form) }}
+			{{ form_end(reservation_form) }}
+			<div style="margin-top: 40px;"></div>
 
-            <a href="{{ path('app_home') }}" style="color: #fbae00; font-family: 'Permanent Marker', cursive;">Retour à la liste des films</a>
-        </div>
-    </div>
+
+			<a href="{{ path('app_home') }}" style="color: #fbae00; font-family: 'Permanent Marker', cursive;">Retour à la liste des films</a>
+
+
+		</div>
+	</div>
+
+
 {% endblock %}
