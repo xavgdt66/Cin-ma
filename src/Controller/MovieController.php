@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Movie;
+use App\Entity\Reservation;
 use App\Entity\DateDiffusion;
 use App\Form\MovieType;
 use App\Form\ReservationFormType;
@@ -13,18 +14,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bundle\SecurityBundle\Security;
 
-
-
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-
-
-
 class MovieController extends AbstractController
 {
-
     private $entityManager;
     private $security;
 
@@ -33,7 +28,6 @@ class MovieController extends AbstractController
         $this->entityManager = $entityManager;
         $this->security = $security;
     }
-
 
     #[Route('/addmovie', name: 'app_movie')]
     public function addmovie(Request $request, EntityManagerInterface $em, Security $security, SluggerInterface $slugger): Response
@@ -46,7 +40,6 @@ class MovieController extends AbstractController
         }
 
         $movie = new Movie(); // Instance de Movie 
-
         $movie->setUser($this->getUser()); // Instance de Movie récupère l'utilisateur courant
 
         $dateDiffusion = new DateDiffusion(); // Instance de DateDiffusion 
@@ -100,8 +93,10 @@ class MovieController extends AbstractController
     }
 
     #[Route('/movie/{id}', name: 'app_movie_show')]
-    public function showMovie($id, EntityManagerInterface $em): Response
+    public function showMovie($id, EntityManagerInterface $em, Request $request): Response
     {
+        $reservation = new Reservation();
+
         $movie = $em->getRepository(Movie::class)->find($id);
 
         if (!$movie) {
@@ -109,6 +104,18 @@ class MovieController extends AbstractController
         }
 
         $form = $this->createForm(ReservationFormType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $reservation->setMovie($movie);
+            $reservation->setNumberOfSeats($form->get('nombrePlaces')->getData());
+
+            $this->entityManager->persist($reservation);
+            $this->entityManager->flush();
+
+            return $this->redirectToRoute('app_home');
+        }
 
         return $this->render('movie/show.html.twig', [
             'movie' => $movie,

@@ -20,7 +20,7 @@ class ReservationController extends AbstractController
     public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
-    }
+    } 
 
     #[Route('/reservation/{id}', name: 'reservation_film')]
     public function reserve(Request $request, Movie $movie): Response
@@ -35,8 +35,8 @@ class ReservationController extends AbstractController
         ]);
 
         $form->handleRequest($request);
-
-        if (dump($form->isSubmitted() && $form->isValid())) {
+        dump($form->isSubmitted(), $form->isValid());
+        if ($form->isSubmitted() && $form->isValid()) {
 
             $reservation->setMovie($movie);
             $reservation->setNumberOfSeats($form->get('nombrePlaces')->getData());
@@ -52,4 +52,7 @@ class ReservationController extends AbstractController
             'movie' => $movie,
         ]);
     }
+
+
+
 }
