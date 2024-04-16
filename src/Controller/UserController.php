@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class UserController extends AbstractController
 {
-    #[Route('/user/{id}', name: 'user_profile')]
+    #[Route('/user/{id}', name: 'user_profile', methods:"GET")]
     public function profile(int $id, EntityManagerInterface $entityManager): Response
     {
         $userRepository = $entityManager->getRepository(User::class);

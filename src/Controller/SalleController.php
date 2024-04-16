@@ -28,7 +28,7 @@ class SalleController extends AbstractController
         $this->security = $security; 
     }
 
-    #[Route("/salle/ajouter", name: "ajouter_salle")]
+    #[Route("/salle/ajouter", name: "ajouter_salle",methods: ['GET', 'POST'])]
     public function ajouterSalle(Request $request, Security $security): Response
     {
 
@@ -60,7 +60,7 @@ class SalleController extends AbstractController
         ]);
     }
 
-    #[Route("/salle/editer/{id}", name: "editer_salle")]
+    #[Route("/salle/editer/{id}", name: "editer_salle",methods: ['GET', 'POST'])]
     public function editerSalle(Request $request, Salle $salle, Security $security): Response
     {
 
@@ -85,7 +85,7 @@ class SalleController extends AbstractController
         ]);
     }
 
-    #[Route("/salle/supprimer/{id}", name: "supprimer_salle")]
+    #[Route("/salle/supprimer/{id}", name: "supprimer_salle",methods: ['GET', 'POST'])]
     public function supprimerSalle(Request $request, Salle $salle, Security $security): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
@@ -99,7 +99,7 @@ class SalleController extends AbstractController
         return $this->redirectToRoute('liste_salles');
     }
 
-    #[Route("/salles", name: "liste_salles")]
+    #[Route("/salles", name: "liste_salles", methods:"GET")]
     public function listeSalles(Security $security): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED');
