@@ -25,20 +25,21 @@
 			<p style="color: #fbae00; font-family: 'Permanent Marker', cursive;">Capacité de la salle :
 				{{ movie.salles.first().nombrePlaces }}</p>
 
-			<h2 style="color: #fbae00; font-family: 'Permanent Marker', cursive;">Réserver des places</h2>
+			{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+				<h2 style="color: #fbae00; font-family: 'Permanent Marker', cursive;">Réserver des places</h2>
 
+				{{ form_start(reservation_form) }}
+				{{ form_errors(reservation_form) }}
 
-			{{ form_start(reservation_form) }}
-			{{ form_errors(reservation_form) }}
+				{% for field in reservation_form %}
+					<div style="margin-top: 20px;"></div>
+					{{ form_widget(field, {'attr': {'style': 'color: #fbae00'}}) }}
+				{% endfor %}
 
-			{% for field in reservation_form %}
-				<div style="margin-top: 20px;"></div>
-				{{ form_widget(field, {'attr': {'style': 'color: #fbae00'}}) }}
-			{% endfor %}
+				{{ form_end(reservation_form) }}
+			{% endif %}
 
-			{{ form_end(reservation_form) }}
-			<div style="margin-top: 40px;"></div>
-
+				<div style="margin-top: 100px;"></div>
 
 			<a href="{{ path('app_home') }}" style="color: #fbae00; font-family: 'Permanent Marker', cursive;">Retour à la liste des films</a>
 

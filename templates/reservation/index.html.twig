@@ -8,7 +8,7 @@
     <h1 style="color: #fbae00; font-family: 'Permanent Marker', cursive;">Mes Réservations</h1>
     
     {% if user_reservations is empty %}
-        <p >Aucune réservation trouvée.</p>
+        <p style="color: #fbae00; font-family: 'Permanent Marker', cursive;" >Aucune réservation trouvée.</p>
     {% else %}
         <ul style="color: #fbae00; font-family: 'Permanent Marker', cursive;">
             {% for reservation in user_reservations %}
