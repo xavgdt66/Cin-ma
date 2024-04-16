@@ -17,7 +17,7 @@ use Symfony\Bundle\SecurityBundle\Security;
 
 class DashboardController extends AbstractDashboardController
 {
-    #[Route('/admin', name: 'admin')]
+    #[Route('/admin', name: 'admin', methods:"GET")]
     public function index(): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED');

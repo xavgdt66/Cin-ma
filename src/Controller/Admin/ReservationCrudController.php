@@ -30,12 +30,7 @@ class ReservationCrudController extends AbstractCrudController
             AssociationField::new('movie')->formatValue(function ($value, $entity) {
                 return $entity->getMovie()->getTitre();
             }),
-           /* AssociationField::new('salle')->formatValue(function ($value, $entity) {
-                return $entity->getSalle()->getNom(); 
-            }),
-            AssociationField::new('dateDiffusion')->formatValue(function ($value, $entity) {
-                return $entity->getDateDiffusion()->format('Y-m-d H:i'); // Formatage de la date de diffusion selon vos besoins
-            }),*/
+           
             AssociationField::new('user'),
             IntegerField::new('number_of_seats', 'Nombre de sieges réserver ')
         ];
