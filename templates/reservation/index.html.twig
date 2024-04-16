@@ -3,25 +3,40 @@
 {% block title %}Mes Réservations{% endblock %}
 
 {% block body %}
-	<div style="margin-top: 40px;"></div>
+    <div style="margin-top: 40px;"></div>
 
     <h1 style="color: #fbae00; font-family: 'Permanent Marker', cursive;">Mes Réservations</h1>
     
     {% if user_reservations is empty %}
-        <p style="color: #fbae00; font-family: 'Permanent Marker', cursive;" >Aucune réservation trouvée.</p>
+        <p style="color: #fbae00; font-family: 'Permanent Marker', cursive;">Aucune réservation trouvée.</p>
     {% else %}
-        <ul style="color: #fbae00; font-family: 'Permanent Marker', cursive;">
-            {% for reservation in user_reservations %}
-                <li>{{ reservation.movie.titre }} - {{ reservation.numberOfSeats }} places - Dates de diffusion :
-                    <ul>
-                        {% for dateDiffusion in reservation.movie.dateDiffusions %}
-                            <li>Date: {{ dateDiffusion.date|date('d/m/Y') }} - Heure: {{ dateDiffusion.heureDebut|date('H:i') }}</li>
-                        {% endfor %}
-                    </ul>
-                </li>
-            {% endfor %}
-        </ul>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Film</th>
+                        <th scope="col">Nombre de places</th>
+                        <th scope="col">Dates de diffusion</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for reservation in user_reservations %}
+                        <tr>
+                            <td>{{ reservation.movie.titre }}</td>
+                            <td>{{ reservation.numberOfSeats }}</td>
+                            <td>
+                                <ul>
+                                    {% for dateDiffusion in reservation.movie.dateDiffusions %}
+                                        <li>Date: {{ dateDiffusion.date|date('d/m/Y') }} - Heure: {{ dateDiffusion.heureDebut|date('H:i') }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     {% endif %}
-     	<div style="margin-top: 40px;"></div>
-
+    
+    <div style="margin-top: 40px;"></div>
 {% endblock %}

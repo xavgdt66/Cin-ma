@@ -99,37 +99,40 @@ class MovieController extends AbstractController
 
 
     #[Route('/movie/{id}', name: 'app_movie_show')]
-    public function showMovie($id, EntityManagerInterface $em, Request $request, Security $security): Response
-    {
-        $reservation = new Reservation();
-    
-        $movie = $em->getRepository(Movie::class)->find($id);
-    
-        if (!$movie) {
-            throw $this->createNotFoundException('Film non trouvé');
-        }
-    
-        $form = $this->createForm(ReservationFormType::class);
-        $form->handleRequest($request);
-    
-        if ($form->isSubmitted() && $form->isValid()) {
-            $user = $security->getUser(); // Obtient l'utilisateur actuellement authentifié
-    
-            $reservation->setMovie($movie);
-            $reservation->setNumberOfSeats($form->get('nombrePlaces')->getData());
-            $reservation->setUser($user); // Associe l'utilisateur à la réservation
-    
-            $this->entityManager->persist($reservation);
-            $this->entityManager->flush();
-    
-            return $this->redirectToRoute('app_home');
-        }
-    
-        return $this->render('movie/show.html.twig', [
-            'movie' => $movie,
-            'reservation_form' => $form->createView(),
-        ]);
+public function showMovie($id, EntityManagerInterface $em, Request $request, Security $security): Response
+{
+    $movie = $em->getRepository(Movie::class)->find($id);
+
+    if (!$movie) {
+        throw $this->createNotFoundException('Film non trouvé');
     }
+
+    $form = $this->createForm(ReservationFormType::class);
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+        $user = $security->getUser();
+        $numberOfSeats = $form->get('nombrePlaces')->getData();
+
+        for ($i = 0; $i < $numberOfSeats; $i++) {  
+            $reservation = new Reservation();
+            $reservation->setMovie($movie);
+            $reservation->setNumberOfSeats(1); 
+            $reservation->setUser($user);
+
+            $em->persist($reservation);
+        }
+
+        $em->flush();
+
+        return $this->redirectToRoute('app_home');
+    }
+
+    return $this->render('movie/show.html.twig', [
+        'movie' => $movie,
+        'reservation_form' => $form->createView(),
+    ]);
+}
 
 
 
