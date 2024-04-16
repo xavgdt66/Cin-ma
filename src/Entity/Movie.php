@@ -41,14 +41,21 @@ class Movie
 
 
     /********DEBUT DATE DIFFUSION********************/
-    #[ORM\OneToMany(targetEntity: DateDiffusion::class, mappedBy: "movie", cascade: ['persist'])] // Relation avec la "private $movie;" de l'entity DateDiffusion
+    #[ORM\OneToMany(targetEntity: DateDiffusion::class, mappedBy: "movie", cascade: ['persist','remove'])] // Relation avec la "private $movie;" de l'entity DateDiffusion
 
     private $dateDiffusions;
+
+      
+    #[ORM\OneToMany(targetEntity: Reservation::class, mappedBy:"movie", cascade: ["persist", "remove"])]
+     
+    private $reservations;
 
     public function __construct()
     {
         $this->dateDiffusions = new ArrayCollection();
         $this->salles = new ArrayCollection();
+        $this->reservations = new ArrayCollection();
+
     }
 
     /**
@@ -167,6 +174,38 @@ class Movie
     public function setBrochureFilename(?string $brochureFilename): self
     {
         $this->brochureFilename = $brochureFilename;
+
+        return $this;
+    }
+
+
+
+     /**
+     * @return Collection|Reservation[]
+     */
+    public function getReservations(): Collection
+    {
+        return $this->reservations;
+    }
+
+    public function addReservation(Reservation $reservation): self
+    {
+        if (!$this->reservations->contains($reservation)) {
+            $this->reservations[] = $reservation;
+            $reservation->setMovie($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReservation(Reservation $reservation): self
+    {
+        if ($this->reservations->removeElement($reservation)) {
+            // Définissez le côté inverse sur null (à supprimer uniquement si nécessaire)
+            if ($reservation->getMovie() === $this) {
+                $reservation->setMovie(null);
+            }
+        }
 
         return $this;
     }

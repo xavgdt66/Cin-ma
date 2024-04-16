@@ -13,7 +13,7 @@ use Symfony\Bundle\SecurityBundle\Security;
 
 class HomeController extends AbstractController
 {
-    #[Route('/', name: 'app_home')]
+    #[Route('/', name: 'app_home', methods:"GET")]
     public function usersWithRoleCinema(EntityManagerInterface $entityManager): Response
     {
         $userRepository = $entityManager->getRepository(User::class); // Recup user 

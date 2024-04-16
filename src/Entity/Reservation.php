@@ -14,8 +14,13 @@ class Reservation
     private $id;
 
 
-    #[ORM\ManyToOne(targetEntity: "App\Entity\Movie")]
+   /* #[ORM\ManyToOne(targetEntity: "App\Entity\Movie")]
     #[ORM\JoinColumn(nullable: false)]
+    private $movie;*/
+
+    
+     #[ORM\ManyToOne(targetEntity:"Movie", inversedBy:"reservations")]
+     #[ORM\JoinColumn(name:"movie_id", referencedColumnName:"id", onDelete:"SET NULL")]
     private $movie;
 
    
@@ -70,4 +75,10 @@ class Reservation
 
         return $this;
     }
+
+
+   
+
+
+
 }

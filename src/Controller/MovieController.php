@@ -33,7 +33,7 @@ class MovieController extends AbstractController
         $this->security = $security;
     }
 
-    #[Route('/addmovie', name: 'app_movie')]
+    #[Route('/addmovie', name: 'app_movie', methods: ['GET', 'POST'])]
     public function addmovie(Request $request, EntityManagerInterface $em, Security $security, SluggerInterface $slugger): Response
     {
 
@@ -98,7 +98,7 @@ class MovieController extends AbstractController
 
 
 
-    #[Route('/movie/{id}', name: 'app_movie_show')]
+    #[Route('/movie/{id}', name: 'app_movie_show', methods: ['GET', 'POST'])]
 public function showMovie($id, EntityManagerInterface $em, Request $request, Security $security): Response
 {
     $movie = $em->getRepository(Movie::class)->find($id);
@@ -138,7 +138,7 @@ public function showMovie($id, EntityManagerInterface $em, Request $request, Sec
 
     // Editer un film
 
-    #[Route("/movie/editer/{id}", name: "editer_movie")]
+    #[Route("/movie/editer/{id}", name: "editer_movie", methods: ['GET', 'POST'])]
     public function editerMovie(Request $request, Movie $movie): Response
     {
         $form = $this->createForm(MovieType::class, $movie);
@@ -158,7 +158,7 @@ public function showMovie($id, EntityManagerInterface $em, Request $request, Sec
 
     // Supprimer un film
 
-    #[Route("/movie/supprimer/{id}", name: "supprimer_movie")]
+    #[Route("/movie/supprimer/{id}", name: "supprimer_movie",methods: ['GET', 'POST'])]
     public function supprimerSalle(Request $request, Movie $movie): Response
     {
         $this->entityManager->remove($movie);
@@ -171,7 +171,7 @@ public function showMovie($id, EntityManagerInterface $em, Request $request, Sec
 
 
 
-    #[Route("/listmovie", name: "liste_movie")]
+    #[Route("/listmovie", name: "liste_movie", methods:"GET")]
     public function listeSalles(): Response
     {
         $user = $this->security->getUser();
