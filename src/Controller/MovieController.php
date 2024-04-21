@@ -99,40 +99,40 @@ class MovieController extends AbstractController
 
 
     #[Route('/movie/{id}', name: 'app_movie_show', methods: ['GET', 'POST'])]
-public function showMovie($id, EntityManagerInterface $em, Request $request, Security $security): Response
-{
-    $movie = $em->getRepository(Movie::class)->find($id);
+    public function showMovie($id, EntityManagerInterface $em, Request $request, Security $security): Response
+    {
+        $movie = $em->getRepository(Movie::class)->find($id);
 
-    if (!$movie) {
-        throw $this->createNotFoundException('Film non trouvé');
-    }
-
-    $form = $this->createForm(ReservationFormType::class);
-    $form->handleRequest($request);
-
-    if ($form->isSubmitted() && $form->isValid()) {
-        $user = $security->getUser();
-        $numberOfSeats = $form->get('nombrePlaces')->getData();
-
-        for ($i = 0; $i < $numberOfSeats; $i++) {  
-            $reservation = new Reservation();
-            $reservation->setMovie($movie);
-            $reservation->setNumberOfSeats(1); 
-            $reservation->setUser($user);
-
-            $em->persist($reservation);
+        if (!$movie) {
+            throw $this->createNotFoundException('Film non trouvé');
         }
 
-        $em->flush();
+        $form = $this->createForm(ReservationFormType::class);
+        $form->handleRequest($request);
 
-        return $this->redirectToRoute('app_home');
+        if ($form->isSubmitted() && $form->isValid()) {
+            $user = $security->getUser();
+            $numberOfSeats = $form->get('nombrePlaces')->getData();
+
+            for ($i = 0; $i < $numberOfSeats; $i++) {
+                $reservation = new Reservation();
+                $reservation->setMovie($movie);
+                $reservation->setNumberOfSeats(1);
+                $reservation->setUser($user);
+
+                $em->persist($reservation);
+            }
+
+            $em->flush();
+
+            return $this->redirectToRoute('app_home');
+        }
+
+        return $this->render('movie/show.html.twig', [
+            'movie' => $movie,
+            'reservation_form' => $form->createView(),
+        ]);
     }
-
-    return $this->render('movie/show.html.twig', [
-        'movie' => $movie,
-        'reservation_form' => $form->createView(),
-    ]);
-}
 
 
 
@@ -158,7 +158,7 @@ public function showMovie($id, EntityManagerInterface $em, Request $request, Sec
 
     // Supprimer un film
 
-    #[Route("/movie/supprimer/{id}", name: "supprimer_movie",methods: ['GET', 'POST'])]
+    #[Route("/movie/supprimer/{id}", name: "supprimer_movie", methods: ['GET', 'POST'])]
     public function supprimerSalle(Request $request, Movie $movie): Response
     {
         $this->entityManager->remove($movie);
@@ -171,8 +171,8 @@ public function showMovie($id, EntityManagerInterface $em, Request $request, Sec
 
 
 
-    #[Route("/listmovie", name: "liste_movie", methods:"GET")]
-    public function listeSalles(): Response
+    #[Route("/listmovie", name: "liste_movie", methods: "GET")]
+    public function listeMovie(): Response
     {
         $user = $this->security->getUser();
         if (!$user) {
@@ -188,65 +188,4 @@ public function showMovie($id, EntityManagerInterface $em, Request $request, Sec
             'movies' => $movies,
         ]);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }

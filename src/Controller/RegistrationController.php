@@ -18,14 +18,11 @@ use Symfony\Component\Routing\Attribute\Route;
 class RegistrationController extends AbstractController
 {
 
-    #[Route('/register', name: 'app_register',methods: ['GET', 'POST'])]
+    #[Route('/register', name: 'app_register', methods: ['GET', 'POST'])]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, Security $security, EntityManagerInterface $entityManager): Response
     {
         $user = new User();
         $user->setRoles(['ROLE_CINEMA']); // Les utilisateurs reçoivent automatiquement le rôle ROLE_CINEMA lors de l'inscription
-
-    
-
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 
@@ -37,10 +34,8 @@ class RegistrationController extends AbstractController
                     $form->get('plainPassword')->getData()
                 )
             );
-
             $entityManager->persist($user);
             $entityManager->flush();
-
             return $security->login($user, 'form_login', 'main');
         }
 
